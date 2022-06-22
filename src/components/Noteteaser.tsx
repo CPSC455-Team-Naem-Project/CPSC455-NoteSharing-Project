@@ -11,6 +11,7 @@ export interface Note {
     course: any
     visibility: string,
     rating: number
+    id: number
   }
 
 export default function Noteteaser({ iconType, course, title, visibility, rating } :Note){

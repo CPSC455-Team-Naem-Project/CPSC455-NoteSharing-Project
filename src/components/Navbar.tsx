@@ -2,13 +2,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition, IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faImage, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Autocomplete, TextField } from '@mui/material';
+import { SyntheticEvent } from 'react';
+import { useDispatch } from 'react-redux';
+
 
 interface Props {
   courses: any[];
 }
 
+const AddToFilter = (classFilter: any) => {
+  return {
+    type: 'ADD_GLOBAL_FILTER',
+    payload: classFilter
+  }
+}
+
+
+
+
+
 //Might want to use react router instead of these direct links
 export default function Navbar(props : any) {
+  const dispatch = useDispatch()
+
+  function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: unknown){
+    dispatch(AddToFilter(newValue))
+    console.log("VALUE", newValue)
+  }
+
   return (
     <div>
       <ul className="navBar">
@@ -25,6 +46,9 @@ export default function Navbar(props : any) {
             options={props.options}
             size={'small'}
             sx={{ width: 400 }}
+            onChange={(event, newValue) => {
+              onChangeHelper(event, newValue)
+           }}
             renderInput={(params) => <TextField {...params} label="Subject" />}
           />
         </li>

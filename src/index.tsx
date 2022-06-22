@@ -30,6 +30,7 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig)
+console.log("STORE", store)
 
 root.render(
     <Provider store={store}>

@@ -28,7 +28,8 @@ export default {
       iconType: icon,
       course: myCourse,
       rating: 5,
-      visibility: "Private"
+      visibility: "Private",
+      id: 1
     }
     noteArr.push(noteObject)
  }

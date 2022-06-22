@@ -34,6 +34,7 @@ export default function NoteGrid({ notes, options }: Props) {
         course={note.course}
         rating={note.rating}
         visibility={note.visibility}
+        id = {note.id}
       />
     </Grid>
   ));
