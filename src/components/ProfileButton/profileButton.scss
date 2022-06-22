@@ -1,0 +1,40 @@
+.profile-button-container {
+  display: flex;
+  align-items: center;
+  height: 55px;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0 4px 12px 0 #B6B6B6;
+  cursor: pointer;
+
+  .profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 50px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    background: white;
+    height: 100%;
+
+    img {
+      border-radius: 50px;
+      height: 100%;
+    }
+
+    p {
+      margin: 0 15px;
+    }
+  }
+
+  .login-btn {
+    padding: 0 70px;
+  }
+
+  p, a {
+    font-weight: bold;
+    font-size: 1.07rem;
+    color: #C24444;
+  }
+}
