@@ -4,6 +4,12 @@ import { faImage, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Autocomplete, TextField } from '@mui/material';
 import { SyntheticEvent } from 'react';
 import { useDispatch } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from "react-router-dom"
+
+import {useNavigate} from 'react-router-dom';
 
 
 interface Props {
@@ -24,21 +30,31 @@ const AddToFilter = (classFilter: any) => {
 //Might want to use react router instead of these direct links
 export default function Navbar(props : any) {
   const dispatch = useDispatch()
+  const navigate = useNavigate();
 
   function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: unknown){
     dispatch(AddToFilter(newValue))
     console.log("VALUE", newValue)
+    navigate('/search');
   }
 
   return (
     <div>
+    <div>
+      </div>
+
+
       <ul className="navBar">
+      <Link to="/feed">
         <li className="headerItem">
-          <a href="feed.html">Your Feed</a>
+                  Your Feed
         </li>
+        </Link>
+        <Link to="/notes">
         <li className="headerItem">
-          <a href="mynotes.html">Your Notes</a>
+          Your Notes
         </li>
+        </Link>
         <li className="headerItem">
           <Autocomplete
             disablePortal
@@ -52,17 +68,21 @@ export default function Navbar(props : any) {
             renderInput={(params) => <TextField {...params} label="Subject" />}
           />
         </li>
+        <Link  to="/upload">
         <li className="headerItemRight">
-          <a href="upload.html">Upload Notes </a>
+          Upload Notes 
         </li>
+        </Link>
+        <Link  to="/profile">
         <li>
-          <a href="about.html">Profile </a>
+          Profile 
         </li>
+        </Link>
+        <Link  to="/profile">
         <li>
-          <a href="about.html">
             <FontAwesomeIcon icon={faUser as IconProp} size="2x" />
-          </a>
         </li>
+        </Link>
       </ul>
     </div>
   );
