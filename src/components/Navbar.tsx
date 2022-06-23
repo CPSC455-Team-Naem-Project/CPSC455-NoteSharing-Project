@@ -39,11 +39,9 @@ export default function Navbar(props : any) {
   }
 
   return (
-    <div>
+    <div style= {{position: "relative", zIndex: 8000}}>
     <div>
       </div>
-
-
       <ul className="navBar">
       <Link to="/feed">
         <li className="headerItem">

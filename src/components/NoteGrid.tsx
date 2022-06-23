@@ -16,7 +16,9 @@ import {
 } from '@mui/material';
 import Noteteaser, { Note } from './Noteteaser';
 import { useState } from 'react';
-
+import {
+ Route, Link
+} from "react-router-dom"
 interface Props {
   notes: Note[];
   options: any;
@@ -26,8 +28,11 @@ export default function NoteGrid({ notes, options }: Props) {
   const [value, setValue] = useState(0);
   const [radioValue, setRadiovalue] = useState('');
 
+
+
   let allNotes = notes.map((note) => (
     <Grid item xs={4}>
+              <Link  to="/viewnote" state={note}>
       <Noteteaser
         title={note.title}
         iconType={note.iconType}
@@ -36,6 +41,7 @@ export default function NoteGrid({ notes, options }: Props) {
         visibility={note.visibility}
         id = {note.id}
       />
+      </Link>
     </Grid>
   ));
 

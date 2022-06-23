@@ -17,6 +17,7 @@ import Feed from './components/Feed';
 import Search from './components/Search';
 import Profile from './components/Profile';
 import UploadNotes from './components/UploadNotes';
+import Notepdfview from './components/Notepdfview';
 
 // import '@fontsource/roboto/300.css';
 // import '@fontsource/roboto/400.css';
@@ -50,8 +51,10 @@ root.render(
         <Route path="/feed" element={<Feed />} />
         <Route path="/notes" element={<Notes />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/upload" element={<UploadNotes />} />
+        <Route path="/upload" element={<App />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/viewnote" element={<Notepdfview />} />
+        
             </Routes>
         </BrowserRouter>
     </Provider>

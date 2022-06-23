@@ -14,7 +14,7 @@ export interface Note {
     id: number
   }
 
-export default function Noteteaser({ iconType, course, title, visibility, rating } :Note){
+export default function Noteteaser({ iconType, course, title, visibility, rating, id } :Note){
 
     const [value, setValue] = useState(rating);
 
@@ -35,6 +35,7 @@ export default function Noteteaser({ iconType, course, title, visibility, rating
          // @ts-ignore
     setValue(newValue);
   }}
+  disabled= {true}
 />
         <p style={{marginTop: 5, marginBottom: 5}}>{visibility}</p>
         <Button className={course.className} variant="outlined" size = "small" sx={ { borderRadius: 8, color:"black" }}>{course.name}</Button> 

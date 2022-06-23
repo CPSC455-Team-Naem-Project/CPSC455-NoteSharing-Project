@@ -6,13 +6,11 @@ import {ProfileButton} from "./components/ProfileButton/ProfileButton";
 import Navbar from './components/Navbar';
 
 import { useSelector } from 'react-redux'
+import { defaultOptions } from './constants/courses';
 
 function App() {
     const auth = getAuth();
-    const options = [
-        { label: 'CPSC 310', id: 1 },
-        { label: 'ECON 101', id: 2 },
-      ];
+
 
     return (
         <div className="app-container">
@@ -20,7 +18,7 @@ function App() {
                <h1>YouNote</h1>
                <ProfileButton />
            </nav>
-           <Navbar options= {options}/>
+           <Navbar options= {defaultOptions}/>
             <div className={'panel-container'}>
                 <div className={'left-panel'}>
                     <h1>Menu</h1>

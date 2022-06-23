@@ -11,7 +11,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField
+    Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Rating
 } from "@mui/material";
 import { getStorage, ref, uploadBytes, uploadString, getDownloadURL, FullMetadata  } from "firebase/storage";
 import {Download} from '@mui/icons-material';
@@ -27,6 +27,7 @@ import firebase from "firebase/compat";
 import { Note } from "./Noteteaser";
 import { faImage, faFilePdf } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from "react-redux";
+import { defaultOptions } from "../constants/courses";
 
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -51,18 +52,15 @@ export default function NoteUploadPage({options} : any) {
     const storage = getStorage();
     const [files, setFiles] = useState<any[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-    const [radioValue, setRadiovalue] = useState('private');
+    const [radioValue, setRadiovalue] = useState('Private');
     const [nameValue, setNameValue] = useState('');
     const [labelValue, setLabelValue] = useState( {})
+    const [ratingValue, setRatingValue] = useState(5);
+
 
 
     const dispatch = useDispatch()
 
-
-       const defaultOptions = [
-        { label: 'CPSC 310', id: 1 },
-        { label: 'ECON 101', id: 2 },
-      ];  
 
     const AddNewNote = (newNote: Note) => {
         return {
@@ -73,6 +71,7 @@ export default function NoteUploadPage({options} : any) {
       }
 
       function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: object){
+
         setLabelValue(newValue)
       }
 
@@ -107,7 +106,7 @@ export default function NoteUploadPage({options} : any) {
             course: labelValue,
             iconType: typeOfIcon,
             visibility: radioValue,
-            rating: 5,
+            rating: ratingValue,
             id: -1
         }
         console.log("NEW OBJECT", newNoteObject)
@@ -134,6 +133,14 @@ export default function NoteUploadPage({options} : any) {
                 Name:
             </p>
             <input type="text" name="name" style={{height: 20, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
+            <Rating
+  name="simple-controlled"
+  value={ratingValue}
+  onChange={(event, newValue) => {
+         // @ts-ignore
+         setRatingValue(newValue);
+  }}
+/>
             <FormControl>
                 <FormLabel sx={ { textAlign: "center", marginTop: 2 } }>Note visiblity</FormLabel>
                 <RadioGroup
@@ -141,8 +148,8 @@ export default function NoteUploadPage({options} : any) {
                     onChange={(e) => setRadiovalue(e.target.value)}
                     row
                 >
-                    <FormControlLabel value="private" control={<Radio />} label="Private" />
-                    <FormControlLabel value="public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />
+                    <FormControlLabel value="Private" control={<Radio />} label="Private" />
+                    <FormControlLabel value="Public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />
                 </RadioGroup>
             </FormControl>
             <Autocomplete

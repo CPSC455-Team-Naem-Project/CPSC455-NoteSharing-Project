@@ -18,7 +18,7 @@ for(let property in courses) {
     course: myCourse,
     rating: 5,
     visibility: "Private",
-    id: 1
+    id: i
   }
   noteArr.push(noteObject)
 }
