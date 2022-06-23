@@ -1,6 +1,6 @@
 import Fileuploadsidebar from "./Fileuploadsidebar";
 import {FilePond, registerPlugin} from "react-filepond";
-import {useState} from "react";
+import {SyntheticEvent, useState} from "react";
 import {
     Button,
     IconButton,
@@ -10,7 +10,8 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField
 } from "@mui/material";
 import { getStorage, ref, uploadBytes, uploadString, getDownloadURL, FullMetadata  } from "firebase/storage";
 import {Download} from '@mui/icons-material';
@@ -23,6 +24,11 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import {FilePondFile} from "filepond";
 import firebase from "firebase/compat";
+import { Note } from "./Noteteaser";
+import { faImage, faFilePdf } from '@fortawesome/free-solid-svg-icons'
+import { useDispatch } from "react-redux";
+
+
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 // -- FilePond --
 
@@ -30,13 +36,47 @@ type UploadedFile = {
     metadata: FullMetadata,
     url: string
 }
+/*
+     interface Note {
+        title: string
+        iconType: 
+        course: any
+        visibility: string,
+        rating: number
+        id: number
+      }
+      */
 
 export default function NoteUploadPage({options} : any) {
     const storage = getStorage();
     const [files, setFiles] = useState<any[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+    const [radioValue, setRadiovalue] = useState('private');
+    const [nameValue, setNameValue] = useState('');
+    const [labelValue, setLabelValue] = useState( {})
 
-    const uploadFiles = () => {
+
+    const dispatch = useDispatch()
+
+
+       const defaultOptions = [
+        { label: 'CPSC 310', id: 1 },
+        { label: 'ECON 101', id: 2 },
+      ];  
+
+    const AddNewNote = (newNote: Note) => {
+        return {
+        //Will need to change when backend added
+          type: 'ADD_NOTE/fulfilled',
+          payload: newNote
+        }
+      }
+
+      function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: object){
+        setLabelValue(newValue)
+      }
+
+    const uploadFiles = (test: any) => {
         const promises = []
         for (const file of files) {
             promises.push(upload(file));
@@ -57,7 +97,21 @@ export default function NoteUploadPage({options} : any) {
     }
 
     const upload = async (file: any) => {
+        console.log("FILE IS", file)
         const file_ = (file as FilePondFile).file;
+        let fileName =  file_.name
+        let fileType = fileName.slice(fileName.length - 3)
+        let typeOfIcon = fileType === "pdf" ? faFilePdf: faImage
+        let newNoteObject = {
+            title: nameValue,
+            course: labelValue,
+            iconType: typeOfIcon,
+            visibility: radioValue,
+            rating: 5,
+            id: -1
+        }
+        console.log("NEW OBJECT", newNoteObject)
+        dispatch(AddNewNote(newNoteObject))
         const storageRef = ref(storage, file_.name);
         const fileBuffer = await file_.arrayBuffer();
         return await uploadBytes(storageRef, fileBuffer, {contentType: file_.type})
@@ -70,8 +124,40 @@ export default function NoteUploadPage({options} : any) {
 
     return(
         <div>
-            <Fileuploadsidebar options={options}/>
-
+  <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column'
+        }}>
+            <p>
+                Name:
+            </p>
+            <input type="text" name="name" style={{height: 20, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
+            <FormControl>
+                <FormLabel sx={ { textAlign: "center", marginTop: 2 } }>Note visiblity</FormLabel>
+                <RadioGroup
+                    defaultValue="private"
+                    onChange={(e) => setRadiovalue(e.target.value)}
+                    row
+                >
+                    <FormControlLabel value="private" control={<Radio />} label="Private" />
+                    <FormControlLabel value="public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />
+                </RadioGroup>
+            </FormControl>
+            <Autocomplete
+                disablePortal
+                id="categoryAdd"
+                options={options || defaultOptions}
+                size={'small'}
+                sx={{ width: 400 }}
+                isOptionEqualToValue={(option : any, value) => option.id === value.id}
+                onChange={(event, newValue) => {
+                    onChangeHelper(event, newValue)
+                 }}
+                renderInput={(params) => <TextField {...params} label="Subject" />}
+            />
+        </div>
             <FilePond
                 files={files}
                 allowReorder={true}
