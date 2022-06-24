@@ -1,25 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500&display=swap');
+
+$background-color: #2a2a2a;
+$background-color-dark: #222222;
+$background-color-darkest: #111111;
+$blue-accent: #41b3c0;
 
 * {
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   width: 100vw;
   height: 100vh;
-  background: #dce6ff;
-  padding: 35px 80px;
-  color: #C24444;
+  background: $background-color;
+  padding: 80px;
+  color: white;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 0;
 }
 
 #root {

@@ -1,4 +1,4 @@
-import './profileButton.scss';
+import './ProfileButton.scss';
 import {getAuth, GoogleAuthProvider, signInWithPopup, UserInfo} from "firebase/auth";
 import React, {useEffect, useState} from "react";
 import {IconButton, Menu, MenuItem} from "@mui/material";
