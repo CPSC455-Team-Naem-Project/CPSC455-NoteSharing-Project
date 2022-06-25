@@ -2,9 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
 export enum MENU {
-  UPLOAD = 'Upload',
-  MY_NOTES = 'My Notes',
-  PROFILE = 'My Profile'
+  UPLOAD,
+  PROFILE,
+  FEED,
+  NOTES,
+  SEARCH,
+  VIEW_NOTE
 }
 
 export interface MenuState {

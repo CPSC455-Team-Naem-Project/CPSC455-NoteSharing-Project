@@ -1,7 +1,11 @@
 import {MENU} from "./MenuSlice";
 import NoteUploadPage from "../../components/NoteUploadPage";
 import {FileCopy, Upload} from "@mui/icons-material";
-import {CgProfile} from "react-icons/cg";
+import Notes from "../../components/Notes";
+import Feed from "../../components/Feed";
+import Search from "../../components/Search";
+import Profile from "../../components/Profile";
+import Notepdfview from "../../components/Notepdfview";
 
 export const HomeComponents = {
     [MENU.UPLOAD]: {
@@ -9,14 +13,29 @@ export const HomeComponents = {
         display: 'Upload',
         icon: Upload
     },
-    [MENU.MY_NOTES]: {
-        component: NoteUploadPage,
-        display: 'My Notes',
+    [MENU.FEED]: {
+        component: Feed,
+        display: 'Feed',
+        icon: Upload
+    },
+    [MENU.VIEW_NOTE]: {
+        component: Notepdfview,
+        display: 'View Note',
+        icon: Upload
+    },
+    [MENU.SEARCH]: {
+        component: Search,
+        display: 'Search',
+        icon: Upload
+    },
+    [MENU.NOTES]: {
+        component: Notes,
+        display: 'Notes',
         icon: FileCopy
     },
     [MENU.PROFILE]: {
-        component: CgProfile,
-        display: 'My Notes',
+        component: Profile,
+        display: 'Profile',
         icon: FileCopy
     }
 }
