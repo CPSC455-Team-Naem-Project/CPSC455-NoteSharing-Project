@@ -142,7 +142,7 @@ export default function NoteUploadPage({options} : any) {
   }}
 />
             <FormControl>
-                <FormLabel sx={ { textAlign: "center", marginTop: 2 } }>Note visiblity</FormLabel>
+                <FormLabel sx={ { textAlign: "center", marginTop: 2, color:"white" } }>Note visiblity</FormLabel>
                 <RadioGroup
                     defaultValue="private"
                     onChange={(e) => setRadiovalue(e.target.value)}
@@ -157,7 +157,7 @@ export default function NoteUploadPage({options} : any) {
                 id="categoryAdd"
                 options={options || defaultOptions}
                 size={'small'}
-                sx={{ width: 400 }}
+                sx={{ width: 400, backgroundColor: "white", marginBottom: 2 }}
                 isOptionEqualToValue={(option : any, value) => option.id === value.id}
                 onChange={(event, newValue) => {
                     onChangeHelper(event, newValue)
