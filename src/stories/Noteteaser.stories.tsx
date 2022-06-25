@@ -14,6 +14,6 @@ export default {
     component: Noteteaser,
   } as ComponentMeta<typeof Noteteaser>;
 
-  export const Image: ComponentStory<typeof Noteteaser> = () => <Noteteaser iconType={faImage} title="Syllabus" course={courses.CPSC110} visibility= {'Private'} rating={3}></Noteteaser>;
+  export const Image: ComponentStory<typeof Noteteaser> = () => <Noteteaser iconType={faImage} title="Syllabus" course={courses.CPSC110} visibility= {'Private'} rating={3} id = {1}></Noteteaser>;
 
-  export const PDF: ComponentStory<typeof Noteteaser> = () => <Noteteaser iconType={faFilePdf} title="Syllabus" course={courses.CPSC210} visibility={"Public"} rating={5}></Noteteaser>;
+  export const PDF: ComponentStory<typeof Noteteaser> = () => <Noteteaser iconType={faFilePdf} title="Syllabus" course={courses.CPSC210} visibility={"Public"} rating={5} id = {2}></Noteteaser>;

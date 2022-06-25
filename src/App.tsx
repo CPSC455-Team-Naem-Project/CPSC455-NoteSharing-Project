@@ -3,6 +3,10 @@ import './App.scss';
 import { getAuth} from "firebase/auth";
 import {Outlet} from "react-router-dom";
 import {ProfileButton} from "./components/ProfileButton/ProfileButton";
+import Navbar from './components/Navbar';
+
+import { useSelector } from 'react-redux'
+import { defaultOptions } from './constants/courses';
 import { CgProfile } from 'react-icons/cg';
 import Authed from "./components/Authed";
 
@@ -31,16 +35,19 @@ function App() {
             </Authed>
           </div>
 
-            {/*<div className={'panel-container'}>*/}
-            {/*    <div className={'left-panel'}>*/}
-            {/*        <h1 id="current-page">Menu</h1>*/}
-            {/*        <a id="profile" href="/profile"><CgProfile/></a>*/}
-            {/*    </div>*/}
 
-            {/*    <div className={'main-panel'}>*/}
-            {/*        <Outlet />*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+           {/*<Navbar options= {defaultOptions}/>*/}
+           {/* <div className={'panel-container'}>*/}
+           {/*     <div className={'left-panel'}>*/}
+           {/*         <h1>Menu</h1>*/}
+           {/*         <h1>Feed</h1>*/}
+           {/*         <h1>Your Notes</h1>*/}
+           {/*     </div>*/}
+
+           {/*     <div className={'main-panel'}>*/}
+           {/*         <Outlet />*/}
+           {/*     </div>*/}
+           {/* </div>*/}
         </div>
     );
 }

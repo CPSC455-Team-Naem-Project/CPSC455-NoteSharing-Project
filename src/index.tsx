@@ -10,7 +10,14 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import A from "./components/A";
 import B from "./components/B";
 import {Home} from "./pages/Home/Home";
-
+import Welcome from './components/test';
+import { element } from 'prop-types';
+import Notes from './components/Notes';
+import Feed from './components/Feed';
+import Search from './components/Search';
+import Profile from './components/Profile';
+import UploadNotes from './components/UploadNotes';
+import Notepdfview from './components/Notepdfview';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -34,6 +41,14 @@ root.render(
                 <Route path="/" element={<App />}>
                     <Route index element={<Home />} />
                 </Route>
+                <Route path="/" element={<Welcome />} />
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/notes" element={<Notes />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/upload" element={<App />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/viewnote" element={<Notepdfview />} />
+
             </Routes>
         </BrowserRouter>
     </Provider>

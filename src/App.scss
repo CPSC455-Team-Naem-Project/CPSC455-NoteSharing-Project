@@ -1,189 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&display=swap');
-
-$background-color: #2a2a2a;
-$background-color-dark: #222222;
-$background-color-darkest: #1a1a1a;
-$blue-accent: #41b3c0;
-$pink-accent: #6d39d6;
-
-* {
-  box-sizing: border-box;
-  font-family: 'Barlow Semi Condensed', sans-serif;
-  text-decoration: none;
-  margin: 0;
-  padding: 0;
-}
-
 .app-container {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
 
-#circle1 {
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  height: 200px;
-  width: 200px;
-  border-radius: 50%;
-  background: ($background-color, 0.8);
-  border-style: solid;
-  border-width: 2px;
-  border-color: $blue-accent;
-}
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10%;
 
-#circle2 {
-  position: absolute;
-  top: -150px;
-  right: 100px;
-  height: 350px;
-  width: 350px;
-  border-radius: 50%;
-  background: rgba($blue-accent, 0.3);
-}
+    h1 {
+      margin: 0;
+      font-size: 3rem;
+    }
+  }
 
-#circle3 {
-  position: absolute;
-  top: 100px;
-  right: 100px;
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  background: rgba($pink-accent, 0.3);
-}
+  .panel-container {
+    height: 85%;
+    display: flex;
+    width: 100%;
+    background: white;
+    border-radius: 15px;
 
-#circle4 {
-  position: absolute;
-  top: -20px;
-  left: -50px;
-  height: 120px;
-  width: 120px;
-  border-radius: 50%;
-  background: rgba($background-color-darkest, 0.3);
-}
+    .left-panel, .main-panel {
+      height: 100%;
+      padding: 30px;
+    }
 
-#circle5 {
-  position: absolute;
-  top: -100px;
-  left: 20px;
-  height: 350px;
-  width: 350px;
-  border-radius: 50%;
-  background: rgba($background-color-darkest, 0.3);
-  z-index: -1;
+    .left-panel {
+      border-radius: 15px;
+      background: #C24444;
+      width: 20%;
+      min-width: 350px;
+      color: #ffffff;
+    }
+  }
 }
-
-#circle6 {
-  position: absolute;
-  bottom: -100px;
-  left: 300px;
-  height: 300px;
-  width: 300px;
-  border-radius: 50%;
-  background: rgba($blue-accent, 0.3);
-  z-index: -1;
-}
-
-#circle7 {
-  position: absolute;
-  bottom: 30px;
-  left: 150px;
-  height: 300px;
-  width: 300px;
-  border-radius: 50%;
-  background: rgba($pink-accent, 0.3);
-  z-index: -1;
-}
-
-#circle8 {
-  position: absolute;
-  top: 600px;
-  left: 10px;
-  height: 300px;
-  width: 300px;
-  border-radius: 50%;
-  border: 2px solid $pink-accent;
-  background: rgba($background-color, 0.3);
-  z-index: -1;
-}
-
-#circle9 {
-  position: absolute;
-  bottom: 220px;
-  right: -50px;
-  height: 300px;
-  width: 300px;
-  border-radius: 50%;
-  background: rgba($background-color-darkest, 0.3);
-  z-index: -2;
-}
-
-#circle10 {
-  position: absolute;
-  bottom: 150px;
-  right: 10px;
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  background: rgba($background-color-darkest, 0.3);
-  z-index: -1;
-}
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 10%;
-  z-index: 3;
-}
-
-#title {
-  margin: 0;
-  font-size: 4rem;
-  background-image: linear-gradient(45deg, $pink-accent, $blue-accent);
-  display: inline-block;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-
-.panel-container {
-  height: 85%;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background: rgba($background-color-dark, 0.2);
-}
-
-.left-panel, .main-panel {
-  height: 100%;
-  padding: 30px;
-}
-
-.main-panel {
-  background-color: rgba($background-color-dark, 0.8);
-  width: 90%;
-  min-width: 450px;
-}
-
-.left-panel {
-  background: rgba($background-color-darkest, 0.8);
-  width: 10%;
-  margin-right: 20px;
-  min-width: 300px;
-  color: #ffffff;
-}
-
 
 .navBar {
+  background-color: aquamarine;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0px;
 }
+
+
 
 .headerItemRight {
   margin-left: auto;
@@ -198,6 +61,7 @@ li {
 }
 
 a {
+  background-color: aquamarine;
   text-decoration: none;
 }
 
@@ -229,33 +93,4 @@ a {
   background-image: linear-gradient(#606c88, #3f4c6b);
 
 
-}
-
-#name-note {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-#name-input {
-  background-color: rgba($background-color, 0.3);
-  color: white;
-  margin-bottom: 20px;
-  border: 2px white;
-  border-style: none none solid none;
-  font-size: 16px;
-  padding: 5px;
-}
-
-#name-input:focus {
-  outline: none;
-}
-
-h2 {
-  margin: 5px;
-}
-
-#category-add {
-  width: 400px;
 }
