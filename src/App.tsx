@@ -1,14 +1,13 @@
 import React from 'react';
 import './App.scss';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import {Link, Outlet} from "react-router-dom";
+import { getAuth} from "firebase/auth";
+import {Outlet} from "react-router-dom";
 import {ProfileButton} from "./components/ProfileButton/ProfileButton";
 import { CgProfile } from 'react-icons/cg';
+import Authed from "./components/Authed";
 
 
 function App() {
-    const auth = getAuth();
-
     return (
         <div className="app-container">
             <div id="circle1" className="circle"></div>
@@ -26,16 +25,22 @@ function App() {
                <ProfileButton />
            </nav>
 
-            <div className={'panel-container'}>
-                <div className={'left-panel'}>
-                    <h1 id="current-page">Menu</h1>
-                    <a id="profile" href="/profile"><CgProfile/></a>
-                </div>
+          <div className={'panel-container'}>
+            <Authed>
+              <Outlet/>
+            </Authed>
+          </div>
 
-                <div className={'main-panel'}>
-                    <Outlet />
-                </div>
-            </div>
+            {/*<div className={'panel-container'}>*/}
+            {/*    <div className={'left-panel'}>*/}
+            {/*        <h1 id="current-page">Menu</h1>*/}
+            {/*        <a id="profile" href="/profile"><CgProfile/></a>*/}
+            {/*    </div>*/}
+
+            {/*    <div className={'main-panel'}>*/}
+            {/*        <Outlet />*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     );
 }
