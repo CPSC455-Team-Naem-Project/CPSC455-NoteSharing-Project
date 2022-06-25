@@ -142,11 +142,15 @@ export default function NoteUploadPage({options} : any) {
   }}
 />
             <FormControl>
-                <FormLabel sx={ { textAlign: "center", marginTop: 2, color:"white" } }>Note visiblity</FormLabel>
+                <FormLabel sx={ { textAlign: "center", marginTop: 2, color:"white !important" } }>Note visiblity</FormLabel>
                 <RadioGroup
                     defaultValue="private"
                     onChange={(e) => setRadiovalue(e.target.value)}
                     row
+                    sx={{
+                        '&, &.Mui-checked': {
+                          color: 'white',
+                        }}}
                 >
                     <FormControlLabel value="Private" control={<Radio />} label="Private" />
                     <FormControlLabel value="Public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />

@@ -120,13 +120,17 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
           }}
         />
         <FormControl>
-          <FormLabel sx={{ textAlign: 'center', marginTop: 2, color: "white" }}>
+          <FormLabel sx={{ textAlign: 'center', marginTop: 2, color: "white !important" }}>
             Note visiblity
           </FormLabel>
           <RadioGroup
             defaultValue={radioValue}
             onChange={(e) => setRadiovalue(e.target.value)}
             row
+            sx={{
+              '&, &.Mui-checked': {
+                color: 'white',
+              }}}
           >
             <FormControlLabel
               value="Private"
@@ -139,6 +143,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
               label="Public"
               sx={{ marginRight: 0 }}
             />
+            
           </RadioGroup>
         </FormControl>
         <Autocomplete
