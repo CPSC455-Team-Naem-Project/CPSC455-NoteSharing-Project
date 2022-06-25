@@ -104,7 +104,7 @@ $pink-accent: #6d39d6;
   height: 300px;
   width: 300px;
   border-radius: 50%;
-  border: 2px solid $pink-accent; 
+  border: 2px solid $pink-accent;
   background: rgba($background-color, 0.3);
   z-index: -1;
 }
@@ -136,6 +136,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   height: 10%;
+  z-index: 3;
 }
 
 #title {
@@ -145,7 +146,7 @@ nav {
   display: inline-block;
   -webkit-background-clip: text;
   -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
+  -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 }
 
@@ -175,7 +176,7 @@ nav {
   min-width: 300px;
   color: #ffffff;
 }
-  
+
 
 .navBar {
   display: flex;
