@@ -6,18 +6,18 @@ import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../app/hooks";
 import {Stack} from "@mui/material";
 import {HomeComponents} from "./MenuItems";
-import {Link, Outlet} from "react-router-dom";
+import {Link, Outlet, useNavigate} from "react-router-dom";
 
 export const Home = () => {
     const dispatch = useDispatch();
+    const nav = useNavigate();
     const currentMenu = useAppSelector(selectCurrentMenu);
 
     const setMenu = (menuItem: MENU) => {
         dispatch(setCurrentMenu(menuItem));
     }
 
-    const currentMenuData = HomeComponents[currentMenu]
-    const Component = currentMenuData.component;
+    const currentMenuData = HomeComponents[currentMenu];
 
     return (
         <Authed>
@@ -55,7 +55,9 @@ export const Home = () => {
                 </div>
 
                 <div className={'main-panel'}>
+                    {/* just to test the store data */}
                     <h1>{currentMenuData.display}</h1>
+
                     <Outlet/>
                 </div>
             </div>
