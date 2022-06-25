@@ -65,6 +65,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
   };
 
   function onSaveHelper() {
+    if (window.confirm("Are you sure you want to save this note?") === true) {
     let editNoteObject = {
       title: nameValue,
       course: labelValue,
@@ -76,6 +77,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
     dispatch(editNote(editNoteObject));
     navigate('/notes');
   }
+  }
 
   const deleteNote = (noteId: any) => {
     return {
@@ -85,8 +87,10 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
   };
 
   function onDeleteHelper() {
-    dispatch(deleteNote(data.id));
-    navigate('/notes');
+    if (window.confirm("Are you sure you want to delete this note?") === true) {
+      dispatch(deleteNote(data.id));
+      navigate('/notes');
+    }
   }
 
   return (
@@ -167,12 +171,11 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
             Delete
           </Button>
         </div>
-      </div>{' '}
-      <img
-        src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
-        alt="new"
+        <img
+        src="https://www.computersciencedegreehub.com/wp-content/uploads/2016/02/what-is-coding-768x512.jpg"
+        alt="Coding"
       />
-      <div className="Example">
+            <div className="Example">
         <header>
           <h1>react-pdf sample page</h1>
         </header>
@@ -192,6 +195,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
           </div>
           <div onClick={() => setCurrentPage(currentPage + 1)}>CLICK ME</div>
         </div>
+      </div>
       </div>
     </div>
   );
