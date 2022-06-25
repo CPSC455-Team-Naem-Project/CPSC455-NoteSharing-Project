@@ -37,15 +37,14 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
+          <Route path="/" element={<Welcome />} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/upload" element={<App />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/viewnote" element={<Notepdfview />} />
         </Route>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/feed" element={<Feed />} />
-        <Route path="/notes" element={<Notes />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/upload" element={<App />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/viewnote" element={<Notepdfview />} />
       </Routes>
     </BrowserRouter>
   </Provider>

@@ -10,21 +10,16 @@ import { useSelector } from 'react-redux'
 import { defaultOptions } from './constants/courses';
 import { CgProfile } from 'react-icons/cg';
 import Authed from "./components/Authed";
+import {Home} from "./pages/Home/Home";
 
 
 function App() {
     return (
         <div className="app-container">
-            <div id="circle1" className="circle"></div>
-            <div id="circle2" className="circle"></div>
-            <div id="circle3" className="circle"></div>
-            <div id="circle4" className="circle"></div>
-            <div id="circle5" className="circle"></div>
-            <div id="circle6" className="circle"></div>
-            <div id="circle7" className="circle"></div>
-            <div id="circle8" className="circle"></div>
-            <div id="circle9" className="circle"></div>
-            <div id="circle10" className="circle"></div>
+          {
+            Array(10).fill(10).map((n, i) =>
+              <div id={'circle' + (i + 1)} className="circle"></div>)
+          }
            <nav>
                <h1 id="title">YouNote</h1>
                <ProfileButton />
@@ -32,7 +27,7 @@ function App() {
 
           <div className={'panel-container'}>
             <Authed>
-              <Outlet/>
+              <Home />
             </Authed>
           </div>
 

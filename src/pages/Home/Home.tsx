@@ -6,10 +6,11 @@ import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../app/hooks";
 import {Stack} from "@mui/material";
 import {HomeComponents} from "./MenuItems";
+import {Outlet} from "react-router-dom";
 
 export const Home = () => {
     const dispatch = useDispatch();
-    const currentMenu = useAppSelector(selectCurrentMenu);
+    const currentMenu: MENU = useAppSelector(selectCurrentMenu);
 
     const setMenu = (menuItem: MENU) => {
         dispatch(setCurrentMenu(menuItem));
@@ -50,6 +51,8 @@ export const Home = () => {
               <div className={'main-panel'}>
                   <h1>{currentMenu}</h1>
                   <Component />
+
+                  <Outlet />
               </div>
           </div>
       </Authed>
