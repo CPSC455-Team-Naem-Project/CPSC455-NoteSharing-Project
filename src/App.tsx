@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.scss';
+import './App2.scss';
 import { getAuth} from "firebase/auth";
 import {Outlet} from "react-router-dom";
 import {ProfileButton} from "./components/ProfileButton/ProfileButton";
