@@ -30,7 +30,7 @@ export default function Noteteaser({ iconType, course, title, visibility, rating
         <p style={{marginTop: 2, marginBottom: 2}}>{title}</p>
         <Rating
   name="simple-controlled"
-  value={value}
+  value={rating}
   onChange={(event, newValue) => {
          // @ts-ignore
     setValue(newValue);

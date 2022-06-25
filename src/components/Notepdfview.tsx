@@ -120,7 +120,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
           }}
         />
         <FormControl>
-          <FormLabel sx={{ textAlign: 'center', marginTop: 2 }}>
+          <FormLabel sx={{ textAlign: 'center', marginTop: 2, color: "white" }}>
             Note visiblity
           </FormLabel>
           <RadioGroup
