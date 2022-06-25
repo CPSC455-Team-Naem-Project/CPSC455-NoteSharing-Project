@@ -1,6 +1,6 @@
 import {MENU} from "./MenuSlice";
 import NoteUploadPage from "../../components/NoteUploadPage";
-import {FileCopy, Upload} from "@mui/icons-material";
+import {Feed as FeedIcon, FileCopy, Note, Search as SearchIcon, Upload, Person} from "@mui/icons-material";
 import Notes from "../../components/Notes";
 import Feed from "../../components/Feed";
 import Search from "../../components/Search";
@@ -16,17 +16,17 @@ export const HomeComponents = {
     [MENU.FEED]: {
         component: Feed,
         display: 'Feed',
-        icon: Upload
+        icon: FeedIcon
     },
     [MENU.VIEW_NOTE]: {
         component: Notepdfview,
         display: 'View Note',
-        icon: Upload
+        icon: Note
     },
     [MENU.SEARCH]: {
         component: Search,
         display: 'Search',
-        icon: Upload
+        icon: SearchIcon
     },
     [MENU.NOTES]: {
         component: Notes,
@@ -36,6 +36,6 @@ export const HomeComponents = {
     [MENU.PROFILE]: {
         component: Profile,
         display: 'Profile',
-        icon: FileCopy
+        icon: Person
     }
 }
