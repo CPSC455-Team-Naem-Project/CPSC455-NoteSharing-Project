@@ -10,10 +10,6 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import A from "./components/A";
 import B from "./components/B";
 import {Home} from "./pages/Home/Home";
-// import '@fontsource/roboto/300.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
 
 
 const container = document.getElementById('root')!;

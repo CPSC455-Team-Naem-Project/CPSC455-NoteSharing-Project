@@ -10,18 +10,13 @@ export default function Fileuploadsidebar({options}: any){
     const [nameValue, setNameValue] = useState('');
 
     return (
-        <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column'
-        }}>
-            <p>
-                Name:
-            </p>
-            <input type="text" name="name" style={{height: 20, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
+        <div id="name-note">
+            <h2>Name:</h2>
+            <input type="text" name="name" id="name-input" placeholder="CPSC 310 Lectures" style={{height: 30, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
             <FormControl>
-                <FormLabel sx={ { textAlign: "center", marginTop: 2 } }>Note visiblity</FormLabel>
+                <FormLabel sx={ { textAlign: "center", marginTop: 2, color: "white" } }>
+                    <h2>Note visiblity</h2>
+                </FormLabel>
                 <RadioGroup
                     defaultValue="private"
                     onChange={(e) => setRadiovalue(e.target.value)}
@@ -33,10 +28,9 @@ export default function Fileuploadsidebar({options}: any){
             </FormControl>
             <Autocomplete
                 disablePortal
-                id="categoryAdd"
+                id="category-add"
                 options={options}
                 size={'small'}
-                sx={{ width: 400 }}
                 renderInput={(params) => <TextField {...params} label="Subject" />}
             />
         </div>
