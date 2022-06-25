@@ -8,5 +8,5 @@ export default function Search() {
             { label: 'CPSC 310', id: 1 },
             { label: 'ECON 101', id: 2 },
           ];
-    return <div><Navbar options = {options}/><h1>Hello</h1></div>
+    return <div><Navbar options = {options}/><h1>Search</h1></div>
   }

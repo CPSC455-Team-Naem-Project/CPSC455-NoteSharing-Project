@@ -16,6 +16,7 @@ import Search from './components/Search';
 import Profile from './components/Profile';
 import UploadNotes from './components/UploadNotes';
 import Notepdfview from './components/Notepdfview';
+import NoteUploadPage from "./components/NoteUploadPage";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -37,15 +38,14 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
+          <Route index element={<NoteUploadPage />} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/upload" element={<App />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/viewnote" element={<Notepdfview />} />
         </Route>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/feed" element={<Feed />} />
-        <Route path="/notes" element={<Notes />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/upload" element={<App />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/viewnote" element={<Notepdfview />} />
       </Routes>
     </BrowserRouter>
   </Provider>

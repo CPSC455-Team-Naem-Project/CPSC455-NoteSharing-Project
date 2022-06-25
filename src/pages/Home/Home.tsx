@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../app/hooks";
 import {Stack} from "@mui/material";
 import {HomeComponents} from "./MenuItems";
+import {Link, Outlet} from "react-router-dom";
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -15,43 +16,49 @@ export const Home = () => {
         dispatch(setCurrentMenu(menuItem));
     }
 
-    const Component = HomeComponents[currentMenu].component;
+    const currentMenuData = HomeComponents[currentMenu]
+    const Component = currentMenuData.component;
 
     return (
-      <Authed>
-          <div className={'home-container'}>
-              <div className={'left-panel'}>
-                  <h1>Menu</h1>
-                  <div className={'menu-list'}>
-                      {
-                          (Object.keys(HomeComponents) as unknown as MENU[])
-                            .map(homeComponentKey => {
-                                  const menuData = HomeComponents[homeComponentKey];
-                                  const Icon = menuData.icon;
-                                  return (
-                                    <div
-                                      key={homeComponentKey}
-                                      onClick={() => setMenu(homeComponentKey)}
-                                      className={currentMenu === homeComponentKey ? 'menu-item menu-item-active' : 'menu-item'}
-                                    >
-                                        <div className={'left-bar'}></div>
-                                        <Stack direction="row" spacing={2}>
-                                            <Icon />
-                                            <a>{menuData.display}</a>
-                                        </Stack>
-                                    </div>
-                                  )
-                              }
-                            )
-                      }
-                  </div>
-              </div>
+        <Authed>
+            <div className={'home-container'}>
+                <div className={'left-panel'}>
+                    <h1>Menu</h1>
+                    <div className={'menu-list'}>
+                        {
+                            (Object.keys(HomeComponents) as unknown as MENU[])
+                                .map(homeComponentKey => {
+                                        const menuData = HomeComponents[homeComponentKey];
+                                        const Icon = menuData.icon;
+                                        return (
+                                            <Link
+                                                key={homeComponentKey}
+                                                to={menuData.link}
+                                            >
+                                                <div
 
-              <div className={'main-panel'}>
-                  <h1>{currentMenu}</h1>
-                  <Component />
-              </div>
-          </div>
-      </Authed>
+                                                    onClick={() => setMenu(homeComponentKey)}
+                                                    className={currentMenu === homeComponentKey ? 'menu-item menu-item-active' : 'menu-item'}
+                                                >
+                                                    <div className={'left-bar'}></div>
+                                                    <Stack direction="row" spacing={2}>
+                                                        <Icon />
+                                                        <span>{menuData.display}</span>
+                                                    </Stack>
+                                                </div>
+                                            </Link>
+                                        )
+                                    }
+                                )
+                        }
+                    </div>
+                </div>
+
+                <div className={'main-panel'}>
+                    <h1>{currentMenuData.display}</h1>
+                    <Outlet/>
+                </div>
+            </div>
+        </Authed>
     )
 }

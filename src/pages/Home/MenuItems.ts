@@ -11,31 +11,37 @@ export const HomeComponents = {
     [MENU.UPLOAD]: {
         component: NoteUploadPage,
         display: 'Upload',
-        icon: Upload
+        icon: Upload,
+        link: '/'
     },
     [MENU.FEED]: {
         component: Feed,
         display: 'Feed',
-        icon: FeedIcon
+        icon: FeedIcon,
+        link: '/feed'
     },
     [MENU.VIEW_NOTE]: {
         component: Notepdfview,
         display: 'View Note',
-        icon: Note
+        icon: Note,
+        link: '/viewnote'
     },
     [MENU.SEARCH]: {
         component: Search,
         display: 'Search',
-        icon: SearchIcon
+        icon: SearchIcon,
+        link: '/search'
     },
     [MENU.NOTES]: {
         component: Notes,
         display: 'Notes',
-        icon: FileCopy
+        icon: FileCopy,
+        link: '/notes'
     },
     [MENU.PROFILE]: {
         component: Profile,
         display: 'Profile',
-        icon: Person
+        icon: Person,
+        link: '/profile'
     }
 }
