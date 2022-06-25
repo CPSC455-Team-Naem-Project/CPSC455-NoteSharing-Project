@@ -27,7 +27,7 @@ export const ProfileButton = () => {
 
     }
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -40,13 +40,13 @@ export const ProfileButton = () => {
             {
                 user ?
                     <>
-                        <button className={'profile-container'} onClick={handleClick}>
+                        <div className={'profile-container'} onClick={handleClick}>
                             <img src={user?.photoURL as string} alt={user?.displayName as string} />
                             <p>{user.displayName?.split(' ').shift()}</p>
                             <IconButton>
                                 <KeyboardArrowDown />
                             </IconButton>
-                        </button>
+                        </div>
                         <Menu
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}

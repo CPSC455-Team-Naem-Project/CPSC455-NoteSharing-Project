@@ -1,0 +1,41 @@
+import {MENU} from "./MenuSlice";
+import NoteUploadPage from "../../components/NoteUploadPage";
+import {FileCopy, Upload} from "@mui/icons-material";
+import Notes from "../../components/Notes";
+import Feed from "../../components/Feed";
+import Search from "../../components/Search";
+import Profile from "../../components/Profile";
+import Notepdfview from "../../components/Notepdfview";
+
+export const HomeComponents = {
+    [MENU.UPLOAD]: {
+        component: NoteUploadPage,
+        display: 'Upload',
+        icon: Upload
+    },
+    [MENU.FEED]: {
+        component: Feed,
+        display: 'Feed',
+        icon: Upload
+    },
+    [MENU.VIEW_NOTE]: {
+        component: Notepdfview,
+        display: 'View Note',
+        icon: Upload
+    },
+    [MENU.SEARCH]: {
+        component: Search,
+        display: 'Search',
+        icon: Upload
+    },
+    [MENU.NOTES]: {
+        component: Notes,
+        display: 'Notes',
+        icon: FileCopy
+    },
+    [MENU.PROFILE]: {
+        component: Profile,
+        display: 'Profile',
+        icon: FileCopy
+    }
+}
