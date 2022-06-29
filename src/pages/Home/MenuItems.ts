@@ -6,36 +6,55 @@ import Feed from "../../components/Feed";
 import Search from "../../components/Search";
 import Profile from "../../components/Profile";
 import Notepdfview from "../../components/Notepdfview";
+import React from "react";
+import {OverridableComponent} from "@mui/material/OverridableComponent";
 
-export const HomeComponents = {
+type HomeComponentsType = {
+    [menu in MENU]: {
+        component: ({ options }: any) => JSX.Element,
+        display: string,
+        icon: OverridableComponent<any>,
+        link: string,
+        default?: boolean
+    }
+};
+
+export const HomeComponents: HomeComponentsType = {
     [MENU.UPLOAD]: {
         component: NoteUploadPage,
         display: 'Upload',
-        icon: Upload
+        icon: Upload,
+        link: '/note-upload',
+        default: true,
     },
     [MENU.FEED]: {
         component: Feed,
         display: 'Feed',
-        icon: FeedIcon
+        icon: FeedIcon,
+        link: '/feed'
     },
     [MENU.VIEW_NOTE]: {
         component: Notepdfview,
         display: 'View Note',
-        icon: Note
+        icon: Note,
+        link: '/view-note'
     },
     [MENU.SEARCH]: {
         component: Search,
         display: 'Search',
-        icon: SearchIcon
+        icon: SearchIcon,
+        link: '/search'
     },
     [MENU.NOTES]: {
         component: Notes,
         display: 'Notes',
-        icon: FileCopy
+        icon: FileCopy,
+        link: '/notes'
     },
     [MENU.PROFILE]: {
         component: Profile,
         display: 'Profile',
-        icon: Person
+        icon: Person,
+        link: '/profile'
     }
 }

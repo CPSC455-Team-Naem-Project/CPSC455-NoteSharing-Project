@@ -96,6 +96,7 @@ export default function NoteGrid({ notes, options }: Props) {
           justifyContent: 'center',
           flexDirection: 'column',
           border: '5px solid black',
+          color: "black"
         }}
       >
         <p>Filter by:</p>
