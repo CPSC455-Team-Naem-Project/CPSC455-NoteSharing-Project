@@ -3,19 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import './index.scss';
 import {initializeApp} from "firebase/app";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import {Home} from "./pages/Home/Home";
-import Welcome from './components/test';
-import { element } from 'prop-types';
-import Notes from './components/Notes';
-import Feed from './components/Feed';
-import Search from './components/Search';
-import Profile from './components/Profile';
-import UploadNotes from './components/UploadNotes';
-import Notepdfview from './components/Notepdfview';
 import NoteUploadPage from "./components/NoteUploadPage";
 import {HomeComponents} from "./pages/Home/MenuItems";
 import {MENU} from "./pages/Home/MenuSlice";
@@ -56,8 +46,3 @@ root.render(
         </BrowserRouter>
     </Provider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

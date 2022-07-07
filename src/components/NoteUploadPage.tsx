@@ -37,16 +37,6 @@ type UploadedFile = {
     metadata: FullMetadata,
     url: string
 }
-/*
-     interface Note {
-        title: string
-        iconType: 
-        course: any
-        visibility: string,
-        rating: number
-        id: number
-      }
-      */
 
 export default function NoteUploadPage({options} : any) {
     const storage = getStorage();
@@ -64,16 +54,16 @@ export default function NoteUploadPage({options} : any) {
 
     const AddNewNote = (newNote: Note) => {
         return {
-        //Will need to change when backend added
-          type: 'ADD_NOTE/fulfilled',
-          payload: newNote
+            //Will need to change when backend added
+            type: 'ADD_NOTE/fulfilled',
+            payload: newNote
         }
-      }
+    }
 
-      function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: object){
+    function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: object){
 
         setLabelValue(newValue)
-      }
+    }
 
     const uploadFiles = (test: any) => {
         const promises = []
@@ -123,52 +113,52 @@ export default function NoteUploadPage({options} : any) {
 
     return(
         <div>
-  <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column'
-        }}>
-            <p>
-                Name:
-            </p>
-            <input type="text" name="name" style={{height: 20, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
-            <Rating
-  name="simple-controlled"
-  value={ratingValue}
-  onChange={(event, newValue) => {
-         // @ts-ignore
-         setRatingValue(newValue);
-  }}
-/>
-            <FormControl>
-                <FormLabel sx={ { textAlign: "center", marginTop: 2, color:"white !important" } }>Note visiblity</FormLabel>
-                <RadioGroup
-                    defaultValue="private"
-                    onChange={(e) => setRadiovalue(e.target.value)}
-                    row
-                    sx={{
-                        '&, &.Mui-checked': {
-                          color: 'white',
-                        }}}
-                >
-                    <FormControlLabel value="Private" control={<Radio />} label="Private" />
-                    <FormControlLabel value="Public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />
-                </RadioGroup>
-            </FormControl>
-            <Autocomplete
-                disablePortal
-                id="categoryAdd"
-                options={options || defaultOptions}
-                size={'small'}
-                sx={{ width: 400, backgroundColor: "white", marginBottom: 2 }}
-                isOptionEqualToValue={(option : any, value) => option.id === value.id}
-                onChange={(event, newValue) => {
-                    onChangeHelper(event, newValue)
-                 }}
-                renderInput={(params) => <TextField {...params} label="Subject" />}
-            />
-        </div>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column'
+            }}>
+                <p>
+                    Name:
+                </p>
+                <input type="text" name="name" style={{height: 20, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
+                <Rating
+                    name="simple-controlled"
+                    value={ratingValue}
+                    onChange={(event, newValue) => {
+                        // @ts-ignore
+                        setRatingValue(newValue);
+                    }}
+                />
+                <FormControl>
+                    <FormLabel sx={ { textAlign: "center", marginTop: 2, color:"white !important" } }>Note visiblity</FormLabel>
+                    <RadioGroup
+                        defaultValue="private"
+                        onChange={(e) => setRadiovalue(e.target.value)}
+                        row
+                        sx={{
+                            '&, &.Mui-checked': {
+                                color: 'white',
+                            }}}
+                    >
+                        <FormControlLabel value="Private" control={<Radio />} label="Private" />
+                        <FormControlLabel value="Public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />
+                    </RadioGroup>
+                </FormControl>
+                <Autocomplete
+                    disablePortal
+                    id="categoryAdd"
+                    options={options || defaultOptions}
+                    size={'small'}
+                    sx={{ width: 400, backgroundColor: "white", marginBottom: 2 }}
+                    isOptionEqualToValue={(option : any, value) => option.id === value.id}
+                    onChange={(event, newValue) => {
+                        onChangeHelper(event, newValue)
+                    }}
+                    renderInput={(params) => <TextField {...params} label="Subject" />}
+                />
+            </div>
             <FilePond
                 files={files}
                 allowReorder={true}
@@ -192,21 +182,23 @@ export default function NoteUploadPage({options} : any) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                      {uploadedFiles.map((uploadedFile) => (
-                          <TableRow
-                              key={uploadedFile.metadata.name}
-                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                          >
-                              <TableCell component="th" scope="row">{uploadedFile.metadata.name}</TableCell>
-                              <TableCell component="th" scope="row">{uploadedFile.metadata.contentType}</TableCell>
-                              <TableCell component="th" scope="row">{uploadedFile.metadata.bucket}</TableCell>
-                              <TableCell component="th" scope="row">
-                                  <IconButton onClick={() => downloadFile(uploadedFile.url)}>
-                                      <Download/>
-                                  </IconButton>
-                              </TableCell>
-                          </TableRow>
-                      ))}
+                      {
+                          uploadedFiles.map((uploadedFile) => (
+                              <TableRow
+                                  key={uploadedFile.metadata.name}
+                                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                              >
+                                  <TableCell component="th" scope="row">{uploadedFile.metadata.name}</TableCell>
+                                  <TableCell component="th" scope="row">{uploadedFile.metadata.contentType}</TableCell>
+                                  <TableCell component="th" scope="row">{uploadedFile.metadata.bucket}</TableCell>
+                                  <TableCell component="th" scope="row">
+                                      <IconButton onClick={() => downloadFile(uploadedFile.url)}>
+                                          <Download/>
+                                      </IconButton>
+                                  </TableCell>
+                              </TableRow>
+                          ))
+                      }
                   </TableBody>
                 </Table>
               </TableContainer>
