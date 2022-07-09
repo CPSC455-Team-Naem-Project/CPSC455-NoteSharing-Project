@@ -3,14 +3,12 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import './index.scss';
 import {initializeApp} from "firebase/app";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import A from "./components/A";
-import B from "./components/B";
-import {Home} from "./pages/Home/Home";
-
+import NoteUploadPage from "./components/NoteUploadPage";
+import {HomeComponents} from "./pages/Home/MenuItems";
+import {MENU} from "./pages/Home/MenuSlice";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -32,14 +30,19 @@ root.render(
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<App />}>
-                    <Route index element={<Home />} />
+                    <Route index element={<NoteUploadPage />} />
+                    {
+                        (Object.keys(HomeComponents) as unknown as MENU[])
+                            .map(homeCompKey => {
+                                const menuData = HomeComponents[homeCompKey];
+                                const Component = menuData.component;
+                                return (
+                                    <Route key={menuData.link} index={menuData.default} path={menuData.link} element={<Component />}/>
+                                )
+                            })
+                    }
                 </Route>
             </Routes>
         </BrowserRouter>
     </Provider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

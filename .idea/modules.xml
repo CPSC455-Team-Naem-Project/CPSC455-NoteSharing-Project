@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/notes-app.iml" filepath="$PROJECT_DIR$/.idea/notes-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../notes-app-server/.idea/notes-app-server.iml" filepath="$PROJECT_DIR$/../notes-app-server/.idea/notes-app-server.iml" />
     </modules>
   </component>
 </project>
