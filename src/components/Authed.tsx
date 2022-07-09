@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { getAuth, User } from "firebase/auth";
 import React, {useEffect, useState} from "react";
 import {Login} from "../pages/Login/Login";

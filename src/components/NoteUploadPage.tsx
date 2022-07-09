@@ -1,6 +1,6 @@
 import Fileuploadsidebar from "./Fileuploadsidebar";
 import {FilePond, registerPlugin} from "react-filepond";
-import {SyntheticEvent, useState} from "react";
+import {SyntheticEvent, useReducer, useState} from "react";
 import {
     Button,
     IconButton,
@@ -11,7 +11,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Rating
+    Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Rating, Box
 } from "@mui/material";
 import { getStorage, ref, uploadBytes, uploadString, getDownloadURL, FullMetadata  } from "firebase/storage";
 import {Download} from '@mui/icons-material';
@@ -23,11 +23,12 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import {FilePondFile} from "filepond";
-import firebase from "firebase/compat";
 import { Note } from "./Noteteaser";
 import { faImage, faFilePdf } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from "react-redux";
 import { defaultOptions } from "../constants/courses";
+import UserNoteService from "../UserNote.service";
+import {getAuth} from "firebase/auth";
 
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -38,18 +39,21 @@ type UploadedFile = {
     url: string
 }
 
+type Course = {
+    name: string;
+}
+
 export default function NoteUploadPage({options} : any) {
     const storage = getStorage();
     const [files, setFiles] = useState<any[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-    const [radioValue, setRadiovalue] = useState('Private');
+    const [radioValue, setRadioValue] = useState('Private');
     const [nameValue, setNameValue] = useState('');
-    const [labelValue, setLabelValue] = useState( {})
+    const [labelValue, setLabelValue] = useState<Course>( {name: ""})
     const [ratingValue, setRatingValue] = useState(5);
 
-
-
     const dispatch = useDispatch()
+    const auth = getAuth();
 
 
     const AddNewNote = (newNote: Note) => {
@@ -60,33 +64,32 @@ export default function NoteUploadPage({options} : any) {
         }
     }
 
-    function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: object){
+    function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: Course){
 
         setLabelValue(newValue)
     }
 
-    const uploadFiles = (test: any) => {
-        const promises = []
-        for (const file of files) {
-            promises.push(upload(file));
-        }
-
-        Promise.all(promises)
-            .then(async snapshots => {
-                const urls = [];
-                for (const snapshot of snapshots) {
-                    urls.push({
-                        metadata: snapshot.metadata,
-                        url: await getDownloadURL(snapshot.ref)
-                    });
-                }
-                setUploadedFiles(urls);
+    const uploadFiles = async () => {
+        try {
+            const snapshot = await upload(files[0])
+            const {name: fileName, size, contentType} = snapshot.metadata;
+            const url = await getDownloadURL(snapshot.ref)
+            await UserNoteService.uploadNote(auth.currentUser, {
+                fileName,
+                size,
+                contentType,
+                url,
+                title: nameValue,
+                course: labelValue.name,
+                visibility: radioValue === 'Public',
+                rating: ratingValue,
             })
-            .catch(console.log)
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     const upload = async (file: any) => {
-        console.log("FILE IS", file)
         const file_ = (file as FilePondFile).file;
         let fileName =  file_.name
         let fileType = fileName.slice(fileName.length - 3)
@@ -112,98 +115,96 @@ export default function NoteUploadPage({options} : any) {
     }
 
     return(
-        <div>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column'
-            }}>
-                <p>
-                    Name:
-                </p>
-                <input type="text" name="name" style={{height: 20, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
-                <Rating
-                    name="simple-controlled"
-                    value={ratingValue}
-                    onChange={(event, newValue) => {
-                        // @ts-ignore
-                        setRatingValue(newValue);
-                    }}
+        <Paper elevation={5}>
+            <Box padding={5}>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column'
+                }}>
+                    <p>
+                        Name:
+                    </p>
+                    <input type="text" name="name" style={{height: 20, width: 200}} onChange={(e) => setNameValue(e.target.value)} />
+                    <Rating
+                        name="simple-controlled"
+                        value={ratingValue}
+                        onChange={(event, newValue) => {
+                            // @ts-ignore
+                            setRatingValue(newValue);
+                        }}
+                    />
+                    <FormControl>
+                        <FormLabel sx={ { textAlign: "center", marginTop: 2 } }>Note Visibility</FormLabel>
+                        <RadioGroup
+                            defaultValue="private"
+                            onChange={(e) => setRadioValue(e.target.value)}
+                            row
+                        >
+                            <FormControlLabel value="Private" control={<Radio />} label="Private" />
+                            <FormControlLabel value="Public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />
+                        </RadioGroup>
+                    </FormControl>
+                    <Autocomplete
+                        disablePortal
+                        id="categoryAdd"
+                        options={options || defaultOptions}
+                        size={'small'}
+                        sx={{ width: 400, backgroundColor: "white", marginBottom: 2 }}
+                        isOptionEqualToValue={(option : any, value) => option.id === value.id}
+                        onChange={(event, newValue) => {
+                            onChangeHelper(event, newValue)
+                        }}
+                        renderInput={(params) => <TextField {...params} label="Subject" />}
+                    />
+                </div>
+                <FilePond
+                    files={files}
+                    allowReorder={true}
+                    allowMultiple={false}
+                    onupdatefiles={setFiles}
+                    labelIdle='Drag and Drop your file or <span class="filepond--label-action">Browse</span>'
                 />
-                <FormControl>
-                    <FormLabel sx={ { textAlign: "center", marginTop: 2, color:"white !important" } }>Note visiblity</FormLabel>
-                    <RadioGroup
-                        defaultValue="private"
-                        onChange={(e) => setRadiovalue(e.target.value)}
-                        row
-                        sx={{
-                            '&, &.Mui-checked': {
-                                color: 'white',
-                            }}}
-                    >
-                        <FormControlLabel value="Private" control={<Radio />} label="Private" />
-                        <FormControlLabel value="Public" control={<Radio />} label="Public" sx={ { marginRight: 0 } } />
-                    </RadioGroup>
-                </FormControl>
-                <Autocomplete
-                    disablePortal
-                    id="categoryAdd"
-                    options={options || defaultOptions}
-                    size={'small'}
-                    sx={{ width: 400, backgroundColor: "white", marginBottom: 2 }}
-                    isOptionEqualToValue={(option : any, value) => option.id === value.id}
-                    onChange={(event, newValue) => {
-                        onChangeHelper(event, newValue)
-                    }}
-                    renderInput={(params) => <TextField {...params} label="Subject" />}
-                />
-            </div>
-            <FilePond
-                files={files}
-                allowReorder={true}
-                allowMultiple={true}
-                onupdatefiles={setFiles}
-                labelIdle='Drag and Drop your files or <span class="filepond--label-action">Browse</span>'
-            />
 
-            <Button variant="outlined"  sx={ {marginTop: 2 } } onClick={uploadFiles}>Upload</Button>
+                <Button disabled={!files.length} variant="outlined"  sx={ {marginTop: 2 } } onClick={uploadFiles}>Upload</Button>
 
-            {
-                uploadedFiles.length > 0 &&
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>File Name</TableCell>
-                      <TableCell>Content Type</TableCell>
-                      <TableCell>Bucket</TableCell>
-                      <TableCell>Download</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                      {
-                          uploadedFiles.map((uploadedFile) => (
-                              <TableRow
-                                  key={uploadedFile.metadata.name}
-                                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                              >
-                                  <TableCell component="th" scope="row">{uploadedFile.metadata.name}</TableCell>
-                                  <TableCell component="th" scope="row">{uploadedFile.metadata.contentType}</TableCell>
-                                  <TableCell component="th" scope="row">{uploadedFile.metadata.bucket}</TableCell>
-                                  <TableCell component="th" scope="row">
-                                      <IconButton onClick={() => downloadFile(uploadedFile.url)}>
-                                          <Download/>
-                                      </IconButton>
-                                  </TableCell>
-                              </TableRow>
-                          ))
-                      }
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            }
-        </div>
+                {
+                    uploadedFiles.length > 0 &&
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>File Name</TableCell>
+                          <TableCell>Content Type</TableCell>
+                          <TableCell>Bucket</TableCell>
+                          <TableCell>Download</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                          {
+                              uploadedFiles.map((uploadedFile) => (
+                                  <TableRow
+                                      key={uploadedFile.metadata.name}
+                                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                  >
+                                      <TableCell component="th" scope="row">{uploadedFile.metadata.name}</TableCell>
+                                      <TableCell component="th" scope="row">{uploadedFile.metadata.contentType}</TableCell>
+                                      <TableCell component="th" scope="row">{uploadedFile.metadata.bucket}</TableCell>
+                                      <TableCell component="th" scope="row">
+                                          <IconButton onClick={() => downloadFile(uploadedFile.url)}>
+                                              <Download/>
+                                          </IconButton>
+                                      </TableCell>
+                                  </TableRow>
+                              ))
+                          }
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                }
+            </Box>
+        </Paper>
     )
 
 }
