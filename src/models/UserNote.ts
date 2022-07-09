@@ -18,6 +18,7 @@ export type UserNoteAttributes = {
     course: UserNoteCourseAttributes;
     visibility: boolean;
     rating: number;
+    date: string;
 }
 
 export type UserNoteCourseAttributes = {

@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {UserNote} from "../models/UserNote";
 import UserNoteService from "../services/UserNote.service";
 import {
+  Paper,
   Stack
 } from "@mui/material";
 import UserNoteComponent from "./UserNoteComponent";
@@ -13,6 +14,7 @@ export default function UserNotesComponent() {
   const notes = useAppSelector(selectUserNotes);
   const dispatch = useDispatch();
 
+  // to get initial user notes
   useEffect(() => {
     const getInitialNotes = async () => {
       const notesData = await UserNoteService.getAllNotesByUserId();
@@ -28,7 +30,11 @@ export default function UserNotesComponent() {
         {/*<NoteGrid notes = {noteArr} options = {defaultOptions}/>*/}
 
         {
-          notes.map((note, index) => <UserNoteComponent index={index} userNote={note} />)
+          notes.map((note, index) =>
+              <Paper>
+                <UserNoteComponent index={index} userNote={note} />
+              </Paper>
+          )
         }
       </Stack>
   )

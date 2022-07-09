@@ -69,6 +69,7 @@ export default function NoteUploadPage({options} : any) {
                 course: labelValue,
                 visibility: radioValue === 'Public',
                 rating: ratingValue,
+                date: new Date().toISOString()
             })
             console.log("NEW OBJECT", uploadedNote)
             setUploadedFiles(uploadedNote.files)

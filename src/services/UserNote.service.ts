@@ -36,7 +36,7 @@ const UserNoteService = {
         }
     },
 
-    uploadFiles: async (files: File[], userData: UserNoteAttributes) => {
+    uploadFiles: async (files: File[], userNoteData: UserNoteAttributes) => {
         const promises = [];
         const noteFiles: UserNoteFile[] = [];
         for (const file of files) {
@@ -57,7 +57,7 @@ const UserNoteService = {
         }
 
         return await UserNoteService.saveNote({
-            ...userData,
+            ...userNoteData,
             files: noteFiles
         })
     },
