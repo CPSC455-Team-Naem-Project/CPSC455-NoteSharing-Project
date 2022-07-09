@@ -36,7 +36,6 @@ export const Home = () => {
                                                 to={menuData.link}
                                             >
                                                 <div
-
                                                     onClick={() => setMenu(homeComponentKey)}
                                                     className={currentMenu === homeComponentKey ? 'menu-item menu-item-active' : 'menu-item'}
                                                 >

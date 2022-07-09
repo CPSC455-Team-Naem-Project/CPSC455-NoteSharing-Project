@@ -37,7 +37,12 @@ root.render(
                                 const menuData = HomeComponents[homeCompKey];
                                 const Component = menuData.component;
                                 return (
-                                    <Route key={menuData.link} index={menuData.default} path={menuData.link} element={<Component />}/>
+                                    <Route
+                                        key={menuData.link}
+                                        index={menuData.default}
+                                        path={menuData.link}
+                                        element={<Component />}
+                                    />
                                 )
                             })
                     }
@@ -46,3 +51,4 @@ root.render(
         </BrowserRouter>
     </Provider>
 );
+

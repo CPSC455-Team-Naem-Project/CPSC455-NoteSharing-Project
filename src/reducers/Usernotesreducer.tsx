@@ -23,6 +23,10 @@ for(let property in courses) {
   noteArr.push(noteObject)
 }
 
+export enum UserNoteReducerActionTypes {
+    SET_NOTES,
+}
+
 const userNoteReducer:  Reducer = (state = noteArr, action: AnyAction) => {
     switch (action.type) {
         case 'DELETE_NOTE/fulfilled':
@@ -37,6 +41,8 @@ const userNoteReducer:  Reducer = (state = noteArr, action: AnyAction) => {
           return newState;
         case 'ADD_NOTE/fulfilled':
           return [...state, action.payload];
+        case UserNoteReducerActionTypes.SET_NOTES:
+            return action.payload;
         default:
           return state;
       }

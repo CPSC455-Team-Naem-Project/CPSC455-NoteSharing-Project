@@ -15,11 +15,12 @@ import {
   TextField,
 } from '@mui/material';
 import Noteteaser, { Note } from './Noteteaser';
-import { SyntheticEvent, useState } from 'react';
+import {SyntheticEvent, useEffect, useState} from 'react';
 import {
  Route, Link
 } from "react-router-dom"
 import { AnyAsyncThunk } from '@reduxjs/toolkit/dist/matchers';
+import UserNoteService from "../services/UserNote.service";
 interface Props {
   notes: Note[];
   options: any;
@@ -34,6 +35,14 @@ export default function NoteGrid({ notes, options }: Props) {
   const [publicNote, setPublicNote] = useState(true)
   const [privateNote, setPrivateNote] = useState(true)
 
+    useEffect(() => {
+        const getInitialNotes = async () => {
+            const notesData = await UserNoteService.getAllNotesByUserId();
+            return notesData.data;
+        }
+
+        getInitialNotes().then(setFilteredNotes)
+    }, [])
 
   function applyFilter(){
     let newFilteredNotes = []

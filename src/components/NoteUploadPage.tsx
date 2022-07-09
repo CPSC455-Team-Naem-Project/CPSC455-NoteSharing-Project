@@ -27,34 +27,27 @@ import { Note } from "./Noteteaser";
 import { faImage, faFilePdf } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from "react-redux";
 import { defaultOptions } from "../constants/courses";
-import UserNoteService from "../UserNote.service";
+import UserNoteService from "../services/UserNote.service";
 import {getAuth} from "firebase/auth";
+import {UserNoteCourseAttributes, UserNoteFile} from "../models/UserNote";
 
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
-// -- FilePond --
-
-type UploadedFile = {
-    metadata: FullMetadata,
-    url: string
-}
-
-type Course = {
-    name: string;
-}
 
 export default function NoteUploadPage({options} : any) {
-    const storage = getStorage();
     const [files, setFiles] = useState<any[]>([]);
-    const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+    const [uploadedFiles, setUploadedFiles] = useState<UserNoteFile[]>([]);
     const [radioValue, setRadioValue] = useState('Private');
     const [nameValue, setNameValue] = useState('');
-    const [labelValue, setLabelValue] = useState<Course>( {name: ""})
+    const [labelValue, setLabelValue] = useState<UserNoteCourseAttributes>( {
+        _id: undefined,
+        className: "",
+        label: "",
+        name: ""
+    })
     const [ratingValue, setRatingValue] = useState(5);
 
     const dispatch = useDispatch()
-    const auth = getAuth();
-
 
     const AddNewNote = (newNote: Note) => {
         return {
@@ -64,49 +57,25 @@ export default function NoteUploadPage({options} : any) {
         }
     }
 
-    function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: Course){
+    function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: UserNoteCourseAttributes){
 
         setLabelValue(newValue)
     }
 
     const uploadFiles = async () => {
         try {
-            const snapshot = await upload(files[0])
-            const {name: fileName, size, contentType} = snapshot.metadata;
-            const url = await getDownloadURL(snapshot.ref)
-            await UserNoteService.uploadNote(auth.currentUser, {
-                fileName,
-                size,
-                contentType,
-                url,
+            const uploadedNote = await UserNoteService.uploadFiles(files, {
                 title: nameValue,
-                course: labelValue.name,
+                course: labelValue,
                 visibility: radioValue === 'Public',
                 rating: ratingValue,
             })
+            console.log("NEW OBJECT", uploadedNote)
+            setUploadedFiles(uploadedNote.files)
+            dispatch(AddNewNote(uploadedNote as unknown as Note))
         } catch (e) {
             console.log(e);
         }
-    }
-
-    const upload = async (file: any) => {
-        const file_ = (file as FilePondFile).file;
-        let fileName =  file_.name
-        let fileType = fileName.slice(fileName.length - 3)
-        let typeOfIcon = fileType === "pdf" ? faFilePdf: faImage
-        let newNoteObject = {
-            title: nameValue,
-            course: labelValue,
-            iconType: typeOfIcon,
-            visibility: radioValue,
-            rating: ratingValue,
-            id: -1
-        }
-        console.log("NEW OBJECT", newNoteObject)
-        dispatch(AddNewNote(newNoteObject))
-        const storageRef = ref(storage, file_.name);
-        const fileBuffer = await file_.arrayBuffer();
-        return await uploadBytes(storageRef, fileBuffer, {contentType: file_.type})
     }
 
     const downloadFile = (url: string) => {
@@ -162,7 +131,7 @@ export default function NoteUploadPage({options} : any) {
                 <FilePond
                     files={files}
                     allowReorder={true}
-                    allowMultiple={false}
+                    allowMultiple={true}
                     onupdatefiles={setFiles}
                     labelIdle='Drag and Drop your file or <span class="filepond--label-action">Browse</span>'
                 />
@@ -185,12 +154,12 @@ export default function NoteUploadPage({options} : any) {
                           {
                               uploadedFiles.map((uploadedFile) => (
                                   <TableRow
-                                      key={uploadedFile.metadata.name}
+                                      key={uploadedFile.fileName}
                                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                   >
-                                      <TableCell component="th" scope="row">{uploadedFile.metadata.name}</TableCell>
-                                      <TableCell component="th" scope="row">{uploadedFile.metadata.contentType}</TableCell>
-                                      <TableCell component="th" scope="row">{uploadedFile.metadata.bucket}</TableCell>
+                                      <TableCell component="th" scope="row">{uploadedFile.fileName}</TableCell>
+                                      <TableCell component="th" scope="row">{uploadedFile.contentType}</TableCell>
+                                      <TableCell component="th" scope="row">{uploadedFile.size}</TableCell>
                                       <TableCell component="th" scope="row">
                                           <IconButton onClick={() => downloadFile(uploadedFile.url)}>
                                               <Download/>

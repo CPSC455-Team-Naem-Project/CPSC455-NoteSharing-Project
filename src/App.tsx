@@ -11,7 +11,7 @@ function App() {
         <div className="app-container">
             {
                 Array(10).fill(1).map((n, i) =>
-                    <div id={'circle' + (i +1)} className="circle"></div>)
+                    <div key={i} id={'circle' + (i +1)} className="circle"></div>)
             }
            <nav>
                <h1 id="title">YouNote</h1>

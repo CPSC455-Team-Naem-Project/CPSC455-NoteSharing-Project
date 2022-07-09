@@ -65,7 +65,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
   };
 
   function onSaveHelper() {
-    if (window.confirm("Are you sure you want to save this note?") === true) {
+    if (window.confirm("Are you sure you want to save this note?")) {
     let editNoteObject = {
       title: nameValue,
       course: labelValue,
@@ -87,7 +87,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
   };
 
   function onDeleteHelper() {
-    if (window.confirm("Are you sure you want to delete this note?") === true) {
+    if (window.confirm("Are you sure you want to delete this note?")) {
       dispatch(deleteNote(data.id));
       navigate('/notes');
     }
@@ -143,7 +143,7 @@ export default function Notepdfview({ options, pdfFilePath }: any) {
               label="Public"
               sx={{ marginRight: 0 }}
             />
-            
+
           </RadioGroup>
         </FormControl>
         <Autocomplete
