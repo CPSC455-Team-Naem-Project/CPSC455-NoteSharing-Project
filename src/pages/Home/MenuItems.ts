@@ -1,7 +1,7 @@
 import {MENU} from "./MenuSlice";
-import NoteUploadPage from "../../components/NoteUploadPage";
+import NoteUploadPage from "../../components/NoteUploadPage/NoteUploadPage";
 import {Feed as FeedIcon, FileCopy, Note, Search as SearchIcon, Upload, Person} from "@mui/icons-material";
-import UserNotesComponent from "../../components/UserNotesComponent";
+import UserNotesComponent from "../../components/UserNotes/UserNotesComponent";
 import Feed from "../../components/Feed";
 import Search from "../../components/Search";
 import Profile from "../../components/Profile";

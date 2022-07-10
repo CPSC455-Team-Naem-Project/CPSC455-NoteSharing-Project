@@ -1,14 +1,12 @@
-import {useEffect, useState} from "react";
-import {UserNote} from "../models/UserNote";
-import UserNoteService from "../services/UserNote.service";
+import {useEffect} from "react";
+import UserNoteService from "../../services/UserNote.service";
 import {
-  Paper,
-  Stack
+  Grid
 } from "@mui/material";
 import UserNoteComponent from "./UserNoteComponent";
 import {useDispatch} from "react-redux";
-import {useAppSelector} from "../app/hooks";
-import {selectUserNotes, setNotes} from "../reducers/UserNoteSlice";
+import {useAppSelector} from "../../app/hooks";
+import {selectUserNotes, setNotes} from "../../reducers/UserNoteSlice";
 
 export default function UserNotesComponent() {
   const notes = useAppSelector(selectUserNotes);
@@ -25,17 +23,17 @@ export default function UserNotesComponent() {
   }, [])
 
   return (
-      <Stack spacing={2}>
+      <Grid container spacing={2}>
         {/*<Navbar/>*/}
         {/*<NoteGrid notes = {noteArr} options = {defaultOptions}/>*/}
 
         {
           notes.map((note, index) =>
-              <Paper>
+              <Grid item xs={12} lg={6}>
                 <UserNoteComponent index={index} userNote={note} />
-              </Paper>
+              </Grid>
           )
         }
-      </Stack>
+      </Grid>
   )
 }

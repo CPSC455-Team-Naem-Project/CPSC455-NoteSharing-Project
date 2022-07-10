@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {courses} from '../constants/courses'
 import Fileuploadsidebar from '../components/Fileuploadsidebar';
-import NoteUploadPage from '../components/NoteUploadPage';
+import NoteUploadPage from '../components/NoteUploadPage/NoteUploadPage';
 
 
 export default {

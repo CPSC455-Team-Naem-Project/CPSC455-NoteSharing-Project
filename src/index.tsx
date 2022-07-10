@@ -6,7 +6,7 @@ import App from './App';
 import './index.scss';
 import {initializeApp} from "firebase/app";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import NoteUploadPage from "./components/NoteUploadPage";
+import NoteUploadPage from "./components/NoteUploadPage/NoteUploadPage";
 import {HomeComponents} from "./pages/Home/MenuItems";
 import {MENU} from "./pages/Home/MenuSlice";
 import {createTheme, ThemeProvider} from "@mui/material";
@@ -35,7 +35,6 @@ const theme = createTheme({
                 root: {
                     // Some CSS
                     fontSize: '1rem',
-                    backgroundColor: 'grey',
                     color: 'white'
                 },
             },
@@ -59,7 +58,8 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     color: 'white !important',
-                    backgroundColor: "#2a2a2a"
+                    backgroundColor: "#2a2a2a",
+                    borderRadius: '9px'
                 }
             },
         },

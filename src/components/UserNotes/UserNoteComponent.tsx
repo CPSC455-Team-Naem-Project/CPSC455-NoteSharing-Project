@@ -1,6 +1,6 @@
-import {UserNote} from "../models/UserNote";
+import {UserNote} from "../../models/UserNote";
 import {
-    Box, Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Collapse,
+    Box, Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Collapse, Container,
     IconButton, IconButtonProps,
     Paper,
     Stack, styled,
@@ -11,10 +11,10 @@ import {
     TableHead,
     TableRow, Typography
 } from "@mui/material";
-import {Delete, Download, ExpandMore as ExpandMoreIcon} from "@mui/icons-material";
-import UserNoteService from "../services/UserNote.service";
+import {Attachment, Delete, Download, Edit, ExpandMore as ExpandMoreIcon} from "@mui/icons-material";
+import UserNoteService from "../../services/UserNote.service";
 import {useDispatch} from "react-redux";
-import {deleteNote} from "../reducers/UserNoteSlice";
+import {deleteNote} from "../../reducers/UserNoteSlice";
 import {useState} from "react";
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -74,6 +74,8 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
             </CardContent>
 
             <CardActions disableSpacing>
+                <Button><Delete/> Delete</Button>
+                <Button><Edit /> Edit</Button>
                 <ExpandMore
                     expand={expanded}
                     onClick={() => setExpanded(!expanded)}
@@ -84,7 +86,16 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <h3>Note Files</h3>
+                    <Stack
+                        direction={'row'}
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                    >
+                        <Attachment />
+                        <Typography variant="h6" component="h5">
+                            Attached Files
+                        </Typography>
+                    </Stack>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                             <TableHead>
