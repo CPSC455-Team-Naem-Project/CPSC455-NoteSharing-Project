@@ -11,9 +11,10 @@ export interface Note {
     course: any
     visibility: string,
     rating: number
-  }
+    id: number
+}
 
-export default function Noteteaser({ iconType, course, title, visibility, rating } :Note){
+export default function Noteteaser({ iconType, course, title, visibility, rating, id } :Note){
 
     const [value, setValue] = useState(rating);
 
@@ -25,20 +26,21 @@ export default function Noteteaser({ iconType, course, title, visibility, rating
             flexDirection: 'column'
         }}>
 
-        <FontAwesomeIcon icon= {iconType as IconProp}  size="2x"/>
-        <p style={{marginTop: 2, marginBottom: 2}}>{title}</p>
-        <Rating
-  name="simple-controlled"
-  value={value}
-  onChange={(event, newValue) => {
-         // @ts-ignore
-    setValue(newValue);
-  }}
-/>
-        <p style={{marginTop: 5, marginBottom: 5}}>{visibility}</p>
-        <Button className={course.className} variant="outlined" size = "small" sx={ { borderRadius: 8, color:"black" }}>{course.name}</Button> 
-                
-         </div>
+            <FontAwesomeIcon icon= {iconType as IconProp}  size="2x"/>
+            <p style={{marginTop: 2, marginBottom: 2}}>{title}</p>
+            <Rating
+                name="simple-controlled"
+                value={rating}
+                onChange={(event, newValue) => {
+                    // @ts-ignore
+                    setValue(newValue);
+                }}
+                disabled= {true}
+            />
+            <p style={{marginTop: 5, marginBottom: 5}}>{visibility}</p>
+            <Button className={course.className} variant="outlined" size = "small" sx={ { borderRadius: 8, color:"black" }}>{course.name}</Button>
+
+        </div>
     )
-    
+
 }

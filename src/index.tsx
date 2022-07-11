@@ -3,14 +3,13 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import './index.scss';
 import {initializeApp} from "firebase/app";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import A from "./components/A";
-import B from "./components/B";
-import {Home} from "./pages/Home/Home";
-
+import NoteUploadPage from "./components/NoteUploadPage/NoteUploadPage";
+import {HomeComponents} from "./pages/Home/MenuItems";
+import {MENU} from "./pages/Home/MenuSlice";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -27,19 +26,89 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig)
 
+const theme = createTheme({
+    components: {
+        // Name of the component
+        MuiButton: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    // Some CSS
+                    fontSize: '1rem',
+                    color: 'white'
+                },
+            },
+        },
+        MuiIconButton: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    color: 'white'
+                },
+            },
+        },
+        MuiTypography: {
+            styleOverrides: {
+                root: {
+                    color: 'white'
+                },
+            },
+        },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    color: 'white !important',
+                    backgroundColor: "#2a2a2a",
+                    borderRadius: '9px'
+                }
+            },
+        },
+        MuiCardHeader: {
+            styleOverrides: {
+                subheader: {
+                    color: 'white',
+                }
+            },
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                body: {
+                    color: 'white',
+                },
+                head: {
+                    color: 'white'
+                }
+            },
+        }
+    },
+});
+
 root.render(
     <Provider store={store}>
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<App />}>
-                    <Route index element={<Home />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<App />}>
+                        <Route index element={<NoteUploadPage />} />
+                        {
+                            (Object.keys(HomeComponents) as unknown as MENU[])
+                                .map(homeCompKey => {
+                                    const menuData = HomeComponents[homeCompKey];
+                                    const Component = menuData.component;
+                                    return (
+                                        <Route
+                                            key={menuData.link}
+                                            index={menuData.default}
+                                            path={menuData.link}
+                                            element={<Component />}
+                                        />
+                                    )
+                                })
+                        }
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
     </Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
