@@ -72,6 +72,13 @@ const UserNoteService = {
         return {userId, userEmail, userDisplayName};
     },
 
+    getNoteById: async (noteId: string) => {
+        const {userId} = UserNoteService.getUserCredentials();
+        const url = concatUrl(`getByUserIdAndNoteId/${userId}/${noteId}`)
+        const response = await axios.get<UserNote>(url)
+        return response.data;
+    },
+
     getAllNotesByUserId: async () => {
         const {userId} = UserNoteService.getUserCredentials();
         return await axios.get(`${BASE_URL}/getAllNotesById/${userId}`)

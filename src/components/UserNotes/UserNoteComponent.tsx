@@ -16,6 +16,7 @@ import UserNoteService from "../../services/UserNote.service";
 import {useDispatch} from "react-redux";
 import {deleteNote} from "../../reducers/UserNoteSlice";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -36,6 +37,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function UserNoteComponent(props: {userNote: UserNote, index: number}) {
     const {userNote, index} = props;
+    const nav = useNavigate();
     const [expanded, setExpanded] = useState(false);
 
     const dispatch = useDispatch();
@@ -51,16 +53,15 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
                 .then(() => dispatch(deleteNote(index)));
     }
 
+    const editUserNote = () => {
+        nav('/edit-note/' + userNote._id, {state: {userNote}})
+    }
+
     return (
         <Card
             raised
         >
             <CardHeader
-                action={
-                    <IconButton  onClick={deleteUserNote}>
-                        <Delete/>
-                    </IconButton>
-                }
                 title={userNote.title}
                 subheader={new Date(userNote.date).toDateString()}
             />
@@ -74,8 +75,12 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
             </CardContent>
 
             <CardActions disableSpacing>
-                <Button><Delete/> Delete</Button>
-                <Button><Edit /> Edit</Button>
+                <IconButton onClick={deleteUserNote}>
+                    <Delete />
+                </IconButton>
+                <IconButton onClick={editUserNote} aria-label="share">
+                    <Edit />
+                </IconButton>
                 <ExpandMore
                     expand={expanded}
                     onClick={() => setExpanded(!expanded)}
