@@ -105,7 +105,12 @@ const UserNoteService = {
             console.log(e)
             return false
         }
-    }
+    },
+
+    getPublicFilteredNotes: async () => {
+        return await axios.get(`${BASE_URL}/search`)
+    },
+
 }
 
 export default UserNoteService;
