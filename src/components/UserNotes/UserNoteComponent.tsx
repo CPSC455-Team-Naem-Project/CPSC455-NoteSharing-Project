@@ -16,6 +16,7 @@ import UserNoteService from "../../services/UserNote.service";
 import {useDispatch} from "react-redux";
 import {deleteNote} from "../../reducers/UserNoteSlice";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -36,6 +37,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function UserNoteComponent(props: {userNote: UserNote, index: number, userId?: string}) {
     const {userNote, index, userId} = props;
+    const nav = useNavigate();
     const [expanded, setExpanded] = useState(false);
     console.log("IN NOTE")
     const userControledNote = !userId || userId === userNote.userId ? true: false
@@ -53,18 +55,16 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
                 .then(() => dispatch(deleteNote(index)));
     }
 
+    const editUserNote = () => {
+        nav('/edit-note/' + userNote._id, {state: {userNote}})
+    }
+
     return (
         <Card
             raised
         >
-           <CardHeader
-                action={
-                    <div>{userControledNote &&
-                    <IconButton  onClick={deleteUserNote}>
-                        <Delete/>
-                    </IconButton> }
-                    </div>
-                }
+
+            <CardHeader
                 title={userNote.title}
                 subheader={<div>{new Date(userNote.date).toDateString()}<div>{!userControledNote && userNote.userDisplayName}</div></div>}
             />
@@ -81,8 +81,15 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
             </CardContent>
 
             <CardActions disableSpacing>
-                {userControledNote && <div><Button><Delete/> Delete</Button>
-                <Button><Edit /> Edit</Button></div> }
+                { userControledNote &&<div>
+                <IconButton onClick={deleteUserNote}>
+                    <Delete />
+                </IconButton>
+                <IconButton onClick={editUserNote} aria-label="share">
+                    <Edit />
+                </IconButton>
+                </div>
+}
                 <ExpandMore
                     expand={expanded}
                     onClick={() => setExpanded(!expanded)}

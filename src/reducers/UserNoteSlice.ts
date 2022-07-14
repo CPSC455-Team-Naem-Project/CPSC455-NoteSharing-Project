@@ -15,7 +15,8 @@ export const userNotesSlice = createSlice({
     initialState,
     reducers: {
         setNotes: (state, action: PayloadAction<UserNote[]>) => {
-            state.userNotes = action.payload;
+            if (action.payload)
+                state.userNotes = action.payload;
         },
         deleteNote: (state, action: PayloadAction<number>) => {
             state.userNotes = state.userNotes.filter((note, index) => index !== action.payload)
