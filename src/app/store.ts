@@ -1,5 +1,4 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import globalSearchReducer from '../reducers/GlobalsearchReducer';
 import userNoteReducer from '../reducers/Usernotesreducer';
 import userNotesReducer from '../reducers/UserNoteSlice';
 import menuReducer from '../pages/Home/MenuSlice';
@@ -8,7 +7,6 @@ export const store = configureStore({
   reducer: {
     menu: menuReducer,
     userNotes: userNoteReducer,
-    globalSearchFilter: globalSearchReducer,
     userNotes_: userNotesReducer
   },
 });

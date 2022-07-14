@@ -34,9 +34,11 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     })
 );
 
-export default function UserNoteComponent(props: {userNote: UserNote, index: number}) {
-    const {userNote, index} = props;
+export default function UserNoteComponent(props: {userNote: UserNote, index: number, userId?: string}) {
+    const {userNote, index, userId} = props;
     const [expanded, setExpanded] = useState(false);
+    console.log("IN NOTE")
+    const userControledNote = !userId || userId === userNote.userId ? true: false
 
     const dispatch = useDispatch();
 
@@ -55,16 +57,21 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
         <Card
             raised
         >
-            <CardHeader
+           <CardHeader
                 action={
+                    <div>{userControledNote &&
                     <IconButton  onClick={deleteUserNote}>
                         <Delete/>
-                    </IconButton>
+                    </IconButton> }
+                    </div>
                 }
                 title={userNote.title}
-                subheader={new Date(userNote.date).toDateString()}
+                subheader={<div>{new Date(userNote.date).toDateString()}<div>{!userControledNote && userNote.userDisplayName}</div></div>}
             />
             <CardContent>
+            <Typography variant="body2">
+                    Course: {userNote.course.label}
+                </Typography>
                 <Typography variant="body2">
                     Visibility: {userNote.visibility ? 'Public' : 'Private'}
                 </Typography>
@@ -74,8 +81,8 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
             </CardContent>
 
             <CardActions disableSpacing>
-                <Button><Delete/> Delete</Button>
-                <Button><Edit /> Edit</Button>
+                {userControledNote && <div><Button><Delete/> Delete</Button>
+                <Button><Edit /> Edit</Button></div> }
                 <ExpandMore
                     expand={expanded}
                     onClick={() => setExpanded(!expanded)}

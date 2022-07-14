@@ -1,47 +1,45 @@
 import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField } from "@mui/material";
-import { SetStateAction, SyntheticEvent, useState } from "react";
+import { SetStateAction, SyntheticEvent, useEffect, useState } from "react";
 import { useSelector, useStore } from "react-redux";
 import { useAppSelector } from "../app/hooks";
 import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
 import UserNoteComponent from "./UserNotes/UserNoteComponent";
+import {defaultOptions} from '../constants/courses'
 
 export default function Search() {
   const [ratingValue, setRatingValue] = useState(0);
-  const [radioValue, setRadiovalue] = useState('');
   const [labelValue, setLabelValue] = useState( null)
-  const [allNoteItems, setAllNoteItems] = useState(null)
-  const [filteredNotes, setFilteredNotes] = useState(null)
-  const [publicNote, setPublicNote] = useState(true)
-  const [privateNote, setPrivateNote] = useState(true)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
+  const [id, setId] = useState('')
 
   const notes = useAppSelector(selectUserNotes);
   console.log("NOTES ARE", notes)
 
+  useEffect(() => {
+    const {userId} = UserNoteService.getUserCredentials();
+    setId(userId)
+
+  }, []);
+
+
 
   async function applyFilter(){
+
+    let fromServer = await UserNoteService.getPublicFilteredNotes()
+    let notesFromServer = fromServer.data
+    notesFromServer = notesFromServer.filter((note: any) => note.userId !== id)
+    console.log("SERVICE IS", notesFromServer)
+    
     if(labelValue !==  null) {
       // @ts-ignore
-      newFilteredNotes = allNoteItems.filter( note => note.rating >= ratingValue && note.course.name === labelValue.name  )
+      notesFromServer = notesFromServer.filter( note => note.rating >= ratingValue && note.course.name === labelValue.name  )
 
     } else{
-     // newFilteredNotes = allNoteItems.filter( note => note.rating >= ratingValue  )
-    }
-    if(publicNote && !privateNote){
-      //newFilteredNotes = newFilteredNotes.filter(note => note.visibility === "Public")
-    } else if(privateNote && !publicNote){
-      //newFilteredNotes = newFilteredNotes.filter(note => note.visibility === "Private")
+      notesFromServer = notesFromServer.filter( (note: any) => note.rating >= ratingValue  )
     }
 
-   let x = await UserNoteService.getPublicFilteredNotes()
-   setNewFilteredNotes(x.data)
-   console.log("SERVICE IS", x)
-
-   // setFilteredNotes(newFilteredNotes)
-
-    console.log(newFilteredNotes)
-    console.log(filteredNotes)
+    setNewFilteredNotes(notesFromServer)
 
 
   }
@@ -52,12 +50,6 @@ export default function Search() {
     setLabelValue(newValue)
   }
   
-    const myState = useSelector((state) => state);
-        console.log("STATE IS", myState)
-        const options = [
-            { label: 'CPSC 310', id: 1 },
-            { label: 'ECON 101', id: 2 },
-          ];
     return(
      <div>
      <div
@@ -78,25 +70,10 @@ export default function Search() {
             setRatingValue(newValue);
           }}
         />
-        <FormGroup row>
-          <FormControlLabel
-            value= {privateNote}
-            control={<Checkbox defaultChecked />}
-            label="Private"
-            onChange = {() => setPrivateNote(!privateNote)}
-          />
-          <FormControlLabel
-            value= {publicNote}
-            onChange={() => setPublicNote(!publicNote)}
-            control={<Checkbox defaultChecked />}
-            label="Public"
-            sx={{ marginRight: 0 }}
-          />
-        </FormGroup>
         <Autocomplete
           disablePortal
           id="categoryAdd"
-          options={options}
+          options={defaultOptions}
           size={'small'}
           isOptionEqualToValue={(option : any, value) => option.id === value.id}
           onChange={(event, newValue) => {
@@ -115,7 +92,7 @@ export default function Search() {
         {
           newFilteredNotes.map((note, index) =>
               <Grid item xs={12} lg={6}>
-                <UserNoteComponent index={index} userNote={note} />
+                <UserNoteComponent index={index} userNote={note} userId={id} />
               </Grid>
           )
         }
