@@ -2,12 +2,6 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
 
-## Storybook
-
-To use storybook cd into the project directory and run:
-
-### `npm run storybook`
-
 ## Available Scripts
 
 In the project directory, you can run:

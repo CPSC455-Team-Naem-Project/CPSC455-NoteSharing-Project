@@ -16,6 +16,7 @@ for(let property in courses) {
     title: property,
     iconType: icon,
     course: myCourse,
+    desription: "",
     rating: 5,
     visibility: "Private",
     id: i
