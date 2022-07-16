@@ -4,7 +4,6 @@ import { useAppSelector } from "../app/hooks";
 import ProfileTabBar from './ProfileTabBar';
 
 const Profile = () => {
-  const [value, setValue] = useState(0);
   const userCredentials = UserNoteService.getUserCredentials();
   
   const handleTabs = () => {
@@ -12,7 +11,6 @@ const Profile = () => {
   }
 
   useEffect(() => {
-      
   }, [])
 
   return (
