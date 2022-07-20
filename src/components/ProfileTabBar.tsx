@@ -1,6 +1,6 @@
 import React, { useState, useEffect, SyntheticEvent } from 'react';
 import { Tabs, Tab, Typography, Box, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField } from "@mui/material";
-import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import LockIcon from '@mui/icons-material/Lock';
 import {defaultOptions} from '../constants/courses'
@@ -8,7 +8,9 @@ import { useAppSelector } from "../app/hooks";
 import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
 import UserNoteComponent from "./UserNotes/UserNoteComponent";
-import NoteGrid from "./NoteGrid";
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import { FollowerAndFollowingTag } from './FollowerAndFollowingTag/FollowerAndFollowingTag';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,11 +44,13 @@ export default function BasicTabs() {
   const [labelValue, setLabelValue] = useState(null)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
   const [privateNotes, setPrivateNotes] = useState([]);
-  const [id, setId] = useState('')
+  const [id, setId] = useState('');
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
 
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();
-    setId(userId)
+    setId(userId);
     applyFilter();
   }, []);
 
@@ -68,6 +72,14 @@ export default function BasicTabs() {
 
     notesFromServer = notesFromServer.filter((note: any) => note.visibility === false)
     setPrivateNotes(notesFromServer);
+
+    // Get followers and following
+    let followers = await UserNoteService.getFollowersByUserId();
+    let following = await UserNoteService.getFollowingByUserId();
+    // should add yourself as a follower for now ******
+    let test = await UserNoteService.addFollowerByUserId("qV4Ywkkldsat5bK5KtUTi1Dm6a12");
+    setFollowers(followers.data);
+    setFollowing(following.data);
   }
 
   return (
@@ -80,7 +92,9 @@ export default function BasicTabs() {
         indicatorColor="primary">
           <Tab icon={<TableRowsIcon/>} label="All Notes" {...a11yProps(0)}/>
           <Tab icon={<LockIcon/>} label="Private Notes" {...a11yProps(1)} />
-          <Tab icon={<ManageAccountsOutlinedIcon/>}label="Settings" {...a11yProps(2)} />
+          <Tab icon={<PeopleAltIcon/>}label="Followers" {...a11yProps(2)} />
+          <Tab icon={<PersonAddAltIcon/>}label="Following" {...a11yProps(3)} />
+          <Tab icon={<SettingsIcon/>}label="Settings" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -110,7 +124,37 @@ export default function BasicTabs() {
       </div>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+      <div>
+        <Grid container spacing={2}>
+        {
+            followers.map((id) =>
+                <Grid item xs={12} lg={6}>
+                  <div className="user-tag">
+                  <FollowerAndFollowingTag followId={id} />
+                  </div>
+                </Grid>
+            )
+          }
+        </Grid>
+      </div>
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+      <div>
+        <Grid container spacing={2}>
+          {
+            following.map((id) =>
+                <Grid item xs={12} lg={6}>
+                  <div className="user-tag">
+                  <FollowerAndFollowingTag followId={id} />
+                  </div>
+                </Grid>
+            )
+          }
+        </Grid>
+      </div>
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        Settings
       </TabPanel>
     </Box>
   );
