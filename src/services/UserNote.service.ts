@@ -91,10 +91,22 @@ const UserNoteService = {
         return await axios.get(`${BASE_URL}/getFollowingById/${userId}`)
     },
 
-    addFollowerByUserId: async (followerName: string): Promise<boolean> => {
+    followUser: async (followerName: string): Promise<boolean> => {
         try {
-            const {userId} = UserNoteService.getUserCredentials();
+            const {userId, userDisplayName} = UserNoteService.getUserCredentials();
             const url = concatUrl(`addFollowerById/${userId}/${followerName}`)
+            const response = await axios.post(url);
+            return response.status === 200;
+        } catch (e) {
+            console.log(e)
+            return false
+        }
+    },
+
+    addToFollowList: async (followerName: string): Promise<boolean> => {
+        try {
+            const {userId, userDisplayName} = UserNoteService.getUserCredentials();
+            const url = concatUrl(`addToFollowersList/${userId}/${followerName}`)
             const response = await axios.post(url);
             return response.status === 200;
         } catch (e) {

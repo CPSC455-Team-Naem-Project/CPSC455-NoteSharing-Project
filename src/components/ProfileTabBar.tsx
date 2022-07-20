@@ -11,6 +11,7 @@ import UserNoteComponent from "./UserNotes/UserNoteComponent";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { FollowerAndFollowingTag } from './FollowerAndFollowingTag/FollowerAndFollowingTag';
+const { v4: uuidv4 } = require('uuid');
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -31,7 +32,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -52,7 +53,7 @@ export default function BasicTabs() {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId);
     applyFilter();
-  }, []);
+  }, [newFilteredNotes, privateNotes]);
 
   function a11yProps(index: number) {
     return {
@@ -66,24 +67,32 @@ export default function BasicTabs() {
   };
 
   async function applyFilter() {
-    let fromServer = await UserNoteService.getAllNotesByUserId();
-    let notesFromServer = fromServer.data;
-    setNewFilteredNotes(notesFromServer);
+    try {
+      let fromServer = await UserNoteService.getAllNotesByUserId();
+      let notesFromServer = fromServer.data;
+      setNewFilteredNotes(notesFromServer);
 
-    notesFromServer = notesFromServer.filter((note: any) => note.visibility === false)
-    setPrivateNotes(notesFromServer);
+      notesFromServer.filter((note: any) => note.visibility === false)
+      setPrivateNotes(notesFromServer);
 
-    // Get followers and following
-    let followers = await UserNoteService.getFollowersByUserId();
-    let following = await UserNoteService.getFollowingByUserId();
-    // should add yourself as a follower for now ******
-    let test = await UserNoteService.addFollowerByUserId("qV4Ywkkldsat5bK5KtUTi1Dm6a12");
-    setFollowers(followers.data);
-    setFollowing(following.data);
+      // Get followers and following
+      let followers = await UserNoteService.getFollowersByUserId();
+      let following = await UserNoteService.getFollowingByUserId();
+      
+      
+      // should add yourself as a follower for now ******
+      // ADD FUNCTIONALITY TO FOLLOWER'S ID ADDED HERE
+      await UserNoteService.followUser("BWjfSniLNmbpkUdD0vOjrgmLeWl1");
+      await UserNoteService.addToFollowList("BWjfSniLNmbpkUdD0vOjrgmLeWl1");
+      setFollowers(followers.data);
+      setFollowing(following.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box key={id} sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} 
         onChange={handleChange} 

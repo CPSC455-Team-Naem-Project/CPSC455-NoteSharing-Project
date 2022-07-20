@@ -14,7 +14,7 @@ const Profile = () => {
   }, [])
 
   return (
-    <div id="profile">
+    <div className="profile">
       <div className="name">{userCredentials.userDisplayName}</div>
       <div className="profile-tab-bar">
         <ProfileTabBar/>
