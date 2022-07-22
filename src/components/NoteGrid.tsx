@@ -29,7 +29,7 @@ interface Props {
 export default function NoteGrid({ notes, options }: Props) {
   const [ratingValue, setRatingValue] = useState(0);
   const [radioValue, setRadiovalue] = useState('');
-  const [labelValue, setLabelValue] = useState( null)
+  const [labelValue, setLabelValue] = useState(null)
   const [allNoteItems, setAllNoteItems] = useState(notes)
   const [filteredNotes, setFilteredNotes] = useState(notes)
   const [publicNote, setPublicNote] = useState(true)

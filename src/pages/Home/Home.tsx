@@ -42,7 +42,7 @@ export const Home = () => {
                                                     <div className={'left-bar'}></div>
                                                     <Stack direction="row" spacing={2}>
                                                         <Icon />
-                                                        <span>{menuData.display}</span>
+                                                        <p>{menuData.display}</p>
                                                     </Stack>
                                                 </div>
                                             </Link>

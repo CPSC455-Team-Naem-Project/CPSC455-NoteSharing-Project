@@ -136,7 +136,7 @@ export default function NoteUploadPage({options} : any) {
                     allowMultiple={true}
                     onupdatefiles={setFiles}
                     acceptedFileTypes={['.pdf', '.doc', 'image/*', 'video/*']}
-                    labelIdle='Drag and Drop your file or <span class="filepond--label-action">Browse</span>'
+                    labelIdle='Drag and Drop your file or <span class="filepond--label-action">Browse</p>'
                 />
 
                 <Button disabled={!files.length} variant="outlined"  sx={ {marginTop: 2 } } onClick={uploadFiles}>Upload</Button>

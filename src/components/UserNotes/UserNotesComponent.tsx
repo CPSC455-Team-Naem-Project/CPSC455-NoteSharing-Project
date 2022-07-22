@@ -26,8 +26,8 @@ export default function UserNotesComponent() {
 
   return (
       <>
-        {/*<Navbar/>*/}
-        {/*<NoteGrid notes = {noteArr} options = {defaultOptions}/>*/}
+        {/* <Navbar/>*/}
+        {/*<NoteGrid notes = {noteArr} options = {defaultOptions}/> */}
 
         {
           (notes && notes.length > 0) ?

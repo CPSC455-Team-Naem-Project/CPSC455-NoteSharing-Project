@@ -6,6 +6,7 @@ import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
 import UserNoteComponent from "./UserNotes/UserNoteComponent";
 import {defaultOptions} from '../constants/courses'
+import NoteGrid from "./NoteGrid";
 
 export default function Search() {
   const [ratingValue, setRatingValue] = useState(0);
@@ -87,7 +88,7 @@ export default function Search() {
       </div>
       <Grid container spacing={2}>
         {/*<Navbar/>*/}
-        {/*<NoteGrid notes = {noteArr} options = {defaultOptions}/>*/}
+        {/* <NoteGrid notes = {noteArr} options = {defaultOptions}/> */}
 
         {
           newFilteredNotes.map((note, index) =>
