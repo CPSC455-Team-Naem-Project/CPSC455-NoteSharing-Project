@@ -65,9 +65,6 @@ const UserNoteService = {
     getUserCredentials: function () {
         if (!auth.currentUser)
             throw new Error('User not authenticated!');
-        if (!auth.currentUser)
-            throw new Error('User not authenticated!');
-
         const {uid: userId, email: userEmail, displayName: userDisplayName} = auth.currentUser;
         return {userId, userEmail, userDisplayName};
     },
@@ -82,6 +79,28 @@ const UserNoteService = {
     getAllNotesByUserId: async () => {
         const {userId} = UserNoteService.getUserCredentials();
         return await axios.get(`${BASE_URL}/getAllNotesById/${userId}`)
+    },
+
+    getFollowersByUserId: async () => {
+        const {userId} = UserNoteService.getUserCredentials();
+        return await axios.get(`${BASE_URL}/getFollowersById/${userId}`)
+    },
+
+    getFollowingByUserId: async () => {
+        const {userId} = UserNoteService.getUserCredentials();
+        return await axios.get(`${BASE_URL}/getFollowingById/${userId}`)
+    },
+
+    addFollowerByUserId: async (followerName: string): Promise<boolean> => {
+        try {
+            const {userId} = UserNoteService.getUserCredentials();
+            const url = concatUrl(`addFollowerById/${userId}/${followerName}`)
+            const response = await axios.post(url);
+            return response.status === 200;
+        } catch (e) {
+            console.log(e)
+            return false
+        }
     },
 
     deleteNoteById: async (noteId: string): Promise<boolean> => {
@@ -110,7 +129,6 @@ const UserNoteService = {
     getPublicFilteredNotes: async () => {
         return await axios.get(`${BASE_URL}/search`)
     },
-
 }
 
 export default UserNoteService;
