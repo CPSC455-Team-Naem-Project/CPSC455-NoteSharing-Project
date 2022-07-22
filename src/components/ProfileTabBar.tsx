@@ -53,7 +53,20 @@ export default function BasicTabs() {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId);
     applyFilter();
-  }, [newFilteredNotes, privateNotes]);
+    initializeFollowers();
+  }, []);
+
+  async function initializeFollowers() {
+    let updatedFollowers = await UserNoteService.getFollowersByUserId();
+    let updatedFollowing = await UserNoteService.getFollowingByUserId();
+    setFollowers(updatedFollowers.data);
+    setFollowing(updatedFollowing.data);
+  }
+
+  async function followUser(idToFollow: string) {
+    await UserNoteService.followUser(idToFollow);
+    await UserNoteService.addToFollowList(idToFollow);
+  }
 
   function a11yProps(index: number) {
     return {
@@ -74,25 +87,13 @@ export default function BasicTabs() {
 
       notesFromServer.filter((note: any) => note.visibility === false)
       setPrivateNotes(notesFromServer);
-
-      // Get followers and following
-      let followers = await UserNoteService.getFollowersByUserId();
-      let following = await UserNoteService.getFollowingByUserId();
-      
-      
-      // should add yourself as a follower for now ******
-      // ADD FUNCTIONALITY TO FOLLOWER'S ID ADDED HERE
-      await UserNoteService.followUser("BWjfSniLNmbpkUdD0vOjrgmLeWl1");
-      await UserNoteService.addToFollowList("BWjfSniLNmbpkUdD0vOjrgmLeWl1");
-      setFollowers(followers.data);
-      setFollowing(following.data);
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <Box key={id} sx={{ width: '100%' }}>
+    <Box key={uuidv4()} sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} 
         onChange={handleChange} 
@@ -139,7 +140,7 @@ export default function BasicTabs() {
             followers.map((id) =>
                 <Grid item xs={12} lg={6}>
                   <div className="user-tag">
-                  <FollowerAndFollowingTag followId={id} />
+                  <FollowerAndFollowingTag followerName={id} />
                   </div>
                 </Grid>
             )
@@ -154,7 +155,7 @@ export default function BasicTabs() {
             following.map((id) =>
                 <Grid item xs={12} lg={6}>
                   <div className="user-tag">
-                  <FollowerAndFollowingTag followId={id} />
+                  <FollowerAndFollowingTag followerName={id} />
                   </div>
                 </Grid>
             )

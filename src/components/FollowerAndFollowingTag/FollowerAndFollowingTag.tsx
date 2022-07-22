@@ -1,14 +1,27 @@
 import './FollowerAndFollowingTag.scss';
-import React, {useEffect, useState} from "react";
-import {IconButton, Menu, MenuItem} from "@mui/material";
-import {KeyboardArrowDown} from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UserNoteService from "../../services/UserNote.service";
+import { useEffect, useState } from 'react';
 
-export const FollowerAndFollowingTag = (props: { followId: any }) => {
-    const { followId } = props;
+export const FollowerAndFollowingTag = (props: { followerName: any }) => {
+    const { followerName } = props;
+    const [test, setTest] = useState(false);
+
+    useEffect(() => {
+
+    }, []);
+
+    async function unfollow() {
+        UserNoteService.removeFromFollowers(followerName);
+        UserNoteService.unfollowUser(followerName);
+        setTest(true);
+        console.log("render");
+    }
 
     return (
          <div className="follower-following-container">
-             {followId}
+             {followerName}
+             <DeleteIcon onClick={unfollow}/>
          </div>
     );
 }
