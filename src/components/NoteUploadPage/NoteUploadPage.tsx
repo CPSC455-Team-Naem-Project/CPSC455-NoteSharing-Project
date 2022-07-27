@@ -1,6 +1,6 @@
 import Fileuploadsidebar from "../Fileuploadsidebar";
 import {FilePond, registerPlugin} from "react-filepond";
-import {SyntheticEvent, useReducer, useState} from "react";
+import {SyntheticEvent, useEffect, useReducer, useState} from "react";
 import {
     Button,
     IconButton,
@@ -22,6 +22,7 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import {FilePondFile} from "filepond";
 import { Note } from "../Noteteaser";
 import { faImage, faFilePdf } from '@fortawesome/free-solid-svg-icons'
@@ -31,10 +32,12 @@ import UserNoteService from "../../services/UserNote.service";
 import {getAuth} from "firebase/auth";
 import {UserNoteCourseAttributes, UserNoteFile} from "../../models/UserNote";
 import UploadedFileTable from "./UploadedFileTable";
+import { any } from "prop-types";
 
 
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
+//['.doc','.pdf','image/*','video/*']
 export default function NoteUploadPage({options} : any) {
     const [files, setFiles] = useState<any[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<UserNoteFile[]>([]);
@@ -47,8 +50,42 @@ export default function NoteUploadPage({options} : any) {
         name: ""
     })
     const [ratingValue, setRatingValue] = useState(5);
+    const [acceptedFileTypes2, setAcceptedFileTypes2] = useState(['.pdf','image/*','video/*'])
+    const [pro, setPro] = useState(false)
 
     const dispatch = useDispatch()
+
+    async function setFileHelper(fileItems: any){
+        let isPro  = await UserNoteService.getPro() 
+        if(isPro){
+        setFiles(fileItems)
+        } else{
+        // @ts-ignore        
+        let files = fileItems.filter(file => (file.file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.file.type != "application/msword"))
+        if (files.length > 0) {
+            setFiles(files)
+            }
+        }
+       
+
+    }
+
+    useEffect(() => {
+       UserNoteService.getPro().then(hasPro => {
+            console.log("HAS", hasPro)
+                if(hasPro){
+                    //For some reason filepond does not see this as true.  Might have to debug further
+                    setPro(true)
+                    console.log("Settign Pro")
+                    //Need to check with chrome but pretty sure its the application/msword one
+                    setAcceptedFileTypes2(['.doc', '.docx', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document','.pdf','image/*','video/*'])
+                    console.log("FILETYPES NOW", acceptedFileTypes2)
+                }
+
+
+        })
+    
+      }, []);
 
     const AddNewNote = (newNote: Note) => {
         return {
@@ -59,11 +96,11 @@ export default function NoteUploadPage({options} : any) {
     }
 
     function onChangeHelper(event: SyntheticEvent<Element, Event>, newValue: UserNoteCourseAttributes){
-
         setLabelValue(newValue)
     }
 
     const uploadFiles = async () => {
+        console.log("FILES ARE", files)
         try {
             const uploadedNote = await UserNoteService.uploadFiles(files, {
                 title: nameValue,
@@ -134,8 +171,9 @@ export default function NoteUploadPage({options} : any) {
                     files={files}
                     allowReorder={true}
                     allowMultiple={true}
-                    onupdatefiles={setFiles}
-                    acceptedFileTypes={['.pdf', '.doc', 'image/*', 'video/*']}
+                    allowFileTypeValidation={true}
+                    onupdatefiles={setFileHelper}
+                    acceptedFileTypes={acceptedFileTypes2}
                     labelIdle='Drag and Drop your file or <span class="filepond--label-action">Browse</span>'
                 />
 
