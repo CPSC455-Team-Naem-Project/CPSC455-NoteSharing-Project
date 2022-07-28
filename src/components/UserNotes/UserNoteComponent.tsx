@@ -1,4 +1,4 @@
-import {UserNote} from "../../models/UserNote";
+import { UserNote } from "../../models/UserNote";
 import {
     Box, Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Collapse, Container,
     IconButton, IconButtonProps,
@@ -11,12 +11,14 @@ import {
     TableHead,
     TableRow, Typography
 } from "@mui/material";
-import {Attachment, Delete, Download, Edit, ExpandMore as ExpandMoreIcon} from "@mui/icons-material";
+import { Attachment, Delete, Download, Edit, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import UserNoteService from "../../services/UserNote.service";
-import {useDispatch} from "react-redux";
-import {deleteNote} from "../../reducers/UserNoteSlice";
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteNote } from "../../reducers/UserNoteSlice";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import SpeechPopup from "./SpeechPopup";
+import { isJSDocTypedefTag } from "typescript";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -35,12 +37,12 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     })
 );
 
-export default function UserNoteComponent(props: {userNote: UserNote, index: number, userId?: string}) {
-    const {userNote, index, userId} = props;
+export default function UserNoteComponent(props: { userNote: UserNote, index: number, userId?: string }) {
+    const { userNote, index, userId } = props;
     const nav = useNavigate();
     const [expanded, setExpanded] = useState(false);
     console.log("IN NOTE")
-    const userControledNote = !userId || userId === userNote.userId ? true: false
+    const userControledNote = !userId || userId === userNote.userId ? true : false
 
     const dispatch = useDispatch();
 
@@ -56,7 +58,7 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
     }
 
     const editUserNote = () => {
-        nav('/edit-note/' + userNote._id, {state: {userNote}})
+        nav('/edit-note/' + userNote._id, { state: { userNote } })
     }
 
     return (
@@ -69,7 +71,7 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
                 subheader={<div>{new Date(userNote.date).toDateString()}<div>{!userControledNote && userNote.userDisplayName}</div></div>}
             />
             <CardContent>
-            <Typography variant="body2">
+                <Typography variant="body2">
                     Course: {userNote.course.label}
                 </Typography>
                 <Typography variant="body2">
@@ -81,15 +83,15 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
             </CardContent>
 
             <CardActions disableSpacing>
-                { userControledNote &&<div>
-                <IconButton onClick={deleteUserNote}>
-                    <Delete />
-                </IconButton>
-                <IconButton onClick={editUserNote} aria-label="share">
-                    <Edit />
-                </IconButton>
+                {userControledNote && <div>
+                    <IconButton onClick={deleteUserNote}>
+                        <Delete />
+                    </IconButton>
+                    <IconButton onClick={editUserNote} aria-label="share">
+                        <Edit />
+                    </IconButton>
                 </div>
-}
+                }
                 <ExpandMore
                     expand={expanded}
                     onClick={() => setExpanded(!expanded)}
@@ -122,7 +124,7 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
                             </TableHead>
                             <TableBody>
                                 {
-                                    userNote.files.map((file) => (
+                                    userNote.files.map((file) => ([
                                         <TableRow
                                             key={file.fileName}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -132,11 +134,15 @@ export default function UserNoteComponent(props: {userNote: UserNote, index: num
                                             <TableCell component="th" scope="row">{file.size}</TableCell>
                                             <TableCell component="th" scope="row">
                                                 <IconButton onClick={() => downloadFile(file.url)}>
-                                                    <Download/>
+                                                    <Download />
                                                 </IconButton>
                                             </TableCell>
-                                        </TableRow>
-                                    ))
+                                        </TableRow>,
+                                        <br />,
+                                        <><h4>{file.contentType?.toString()}</h4><SpeechPopup trigger={file.contentType?.toString().includes("pdf")}>
+                                            {/* <button id="get-pdf" onClick={() => getFileText(file)}>Get File</button> */}
+                                        </SpeechPopup></>
+                                    ]))
                                 }
                             </TableBody>
                         </Table>
