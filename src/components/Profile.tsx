@@ -19,6 +19,8 @@ export default function Welcome() {
 
   function handlePayment(){
     console.log("ID IS", id)
+    let fetchBaseURL = process.env.REACT_APP_PROD_URL ? process.env.REACT_APP_PROD_URL: process.env.REACT_APP_SERVER_URL
+    let stripeURL =`${fetchBaseURL}/stripe-checkout`
     fetch(`http://localhost:5000/notes/stripe-checkout`, {
       method: "POST",
       headers: {

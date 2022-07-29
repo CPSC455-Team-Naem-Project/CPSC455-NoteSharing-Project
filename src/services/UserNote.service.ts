@@ -12,7 +12,7 @@ initializeApp(firebaseConfig)
 const storage = getStorage()
 const auth = getAuth();
 
-const BASE_URL = 'http://localhost:5000/notes';
+const BASE_URL = process.env.REACT_APP_PROD_URL ? process.env.REACT_APP_PROD_URL: process.env.REACT_APP_SERVER_URL
 const concatUrl = (url: string) => `${BASE_URL}/${url}`
 
 const UserNoteService = {

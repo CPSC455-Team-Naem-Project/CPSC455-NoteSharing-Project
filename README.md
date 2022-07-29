@@ -1,3 +1,7 @@
+# Note Sharing App
+
+Our app was created to solve two problems. 1) Being able to look at your own notes from anywhere and 2) being able to find notes for classes you want to take. Often times when registering for courses there is not a lot of information available on what that course involves. With our app, students can upload notes and syllabi so others will have a better idea of what is in store and so they can study while away from their main computer.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
