@@ -39,6 +39,7 @@ export default function Welcome() {
         })
       }
     }).then(({url})=> {
+      console.log("URL IS", url)
       window.location = url
     }).catch(err => {
       console.log("SOMETHING WENT WRONG", err)
