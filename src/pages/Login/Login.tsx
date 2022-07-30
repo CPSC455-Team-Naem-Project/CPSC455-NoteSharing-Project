@@ -10,8 +10,8 @@ export  const Login = (props: any) => {
     }
     return (
         <div>
-            <h1>Please login to continue</h1>
-            <button onClick={showLogin}>Login</button>
+            <h1>Please login to continue ...</h1>
+            {/* <button onClick={showLogin}>Login</button> */}
         </div>
     )
 }
