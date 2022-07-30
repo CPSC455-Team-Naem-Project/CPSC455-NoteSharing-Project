@@ -21,7 +21,7 @@ export default function NoteUploader(){
                 allowReorder={true}
                 allowMultiple={true}
                 onupdatefiles={setFiles}
-                labelIdle='Drag and Drop your files or <span class="filepond--label-action">Browse</span>'
+                labelIdle='Drag and Drop your files or <span class="filepond--label-action">Browse</p>'
             />
         </div>
     )

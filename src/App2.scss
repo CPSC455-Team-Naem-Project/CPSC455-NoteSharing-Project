@@ -1,3 +1,8 @@
+@use "@material/tab-bar/mdc-tab-bar";
+@use "@material/tab-scroller/mdc-tab-scroller";
+@use "@material/tab-indicator/mdc-tab-indicator";
+@use "@material/tab/mdc-tab";
+
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&display=swap');
 
 $background-color: #2a2a2a;
@@ -257,4 +262,43 @@ h2 {
 
 #category-add {
   width: 400px;
+}
+
+.profile {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-top: 10px;
+  background: $background-color-darkest;
+  border-radius: 15px;
+  width: 95%;
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+}
+
+.name {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-top: 10px;
+  font-size: 40px;
+  background-image: linear-gradient(45deg, $pink-accent, $blue-accent);
+  display: inline-block;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.profile-tab-bar{
+  margin: auto;
+  margin-top: 10%;
+  width: 80%;
+  padding: 10px;
+}
+
+.feed-container {
+  padding: 30px;
+  margin: auto;
 }

@@ -78,7 +78,7 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                     Visibility: {userNote.visibility ? 'Public' : 'Private'}
                 </Typography>
                 <Typography variant="body2">
-                    Rating: {userNote.rating}
+                    Rating: {userNote.rating}/5
                 </Typography>
             </CardContent>
 

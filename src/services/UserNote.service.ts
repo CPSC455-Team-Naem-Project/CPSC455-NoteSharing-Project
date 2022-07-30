@@ -65,9 +65,6 @@ const UserNoteService = {
     getUserCredentials: function () {
         if (!auth.currentUser)
             throw new Error('User not authenticated!');
-        if (!auth.currentUser)
-            throw new Error('User not authenticated!');
-
         const {uid: userId, email: userEmail, displayName: userDisplayName} = auth.currentUser;
         return {userId, userEmail, userDisplayName};
     },
@@ -79,9 +76,71 @@ const UserNoteService = {
         return response.data;
     },
 
+    getMostRecentNotes: async () => {
+        return await axios.get(`${BASE_URL}/getMostRecentNotes`)
+    },
+
     getAllNotesByUserId: async () => {
         const {userId} = UserNoteService.getUserCredentials();
         return await axios.get(`${BASE_URL}/getAllNotesById/${userId}`)
+    },
+
+    getFollowersByUserId: async () => {
+        const {userId} = UserNoteService.getUserCredentials();
+        return await axios.get(`${BASE_URL}/getFollowersById/${userId}`)
+    },
+
+    getFollowingByUserId: async () => {
+        const {userId} = UserNoteService.getUserCredentials();
+        return await axios.get(`${BASE_URL}/getFollowingById/${userId}`)
+    },
+
+    followUser: async (followerName: string): Promise<boolean> => {
+        try {
+            const {userId} = UserNoteService.getUserCredentials();
+            const url = concatUrl(`addFollowerById/${userId}/${followerName}`)
+            const response = await axios.post(url);
+            return response.status === 200;
+        } catch (e) {
+            console.log(e)
+            return false
+        }
+    },
+
+    addToFollowList: async (followerName: string): Promise<boolean> => {
+        try {
+            const {userId} = UserNoteService.getUserCredentials();
+            const url = concatUrl(`addToFollowersList/${userId}/${followerName}`)
+            const response = await axios.post(url);
+            return response.status === 200;
+        } catch (e) {
+            console.log(e)
+            return false
+        }
+    },
+
+    removeFromFollowers: async (followerName: string): Promise<boolean> => {
+        try {
+            const {userId, userDisplayName} = UserNoteService.getUserCredentials();
+            const url = concatUrl(`removeFollower/${userId}/${followerName}`)
+            const response = await axios.post(url);
+            return response.status === 200;
+        } catch (e) {
+            console.log(e)
+            return false
+        }
+    },
+
+    unfollowUser: async (followingName: string): Promise<boolean> => {
+        try {
+            const {userId, userDisplayName} = UserNoteService.getUserCredentials();
+            const url = concatUrl(`removeFollowing/${userId}/${followingName}`)
+            const response = await axios.post(url);
+            return response.status === 200;
+        } catch (e) {
+            console.log(e)
+            return false
+        }
     },
 
     deleteNoteById: async (noteId: string): Promise<boolean> => {

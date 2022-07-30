@@ -8,6 +8,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "@material/tab-bar": "^14.0.0",
     "@mui/icons-material": "^5.8.3",
     "@mui/material": "^5.8.3",
     "@reduxjs/toolkit": "^1.8.2",
@@ -31,7 +32,6 @@
     "react-icons": "^4.4.0",
     "react-pdf": "^5.7.2",
     "react-redux": "^8.0.2",
-    "react-refresh": "^0.14.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "sass": "^1.52.3",
@@ -42,9 +42,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -75,16 +73,6 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.5.8",
-    "@storybook/addon-essentials": "^6.5.8",
-    "@storybook/addon-interactions": "^6.5.8",
-    "@storybook/addon-links": "^6.5.8",
-    "@storybook/builder-webpack5": "^6.5.8",
-    "@storybook/manager-webpack5": "^6.5.8",
-    "@storybook/node-logger": "^6.5.8",
-    "@storybook/preset-create-react-app": "^4.1.2",
-    "@storybook/react": "^6.5.8",
-    "@storybook/testing-library": "0.0.11",
     "@types/react-pdf": "^5.7.2",
     "babel-plugin-named-exports-order": "0.0.2",
     "prop-types": "^15.8.1",
