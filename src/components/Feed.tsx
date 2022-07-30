@@ -27,12 +27,18 @@ const Feed = () => {
     setFollowing(updatedFollowing.data);
   }
 
+  async function handleFollow(idToFollow: string) {
+      await UserNoteService.followUser(idToFollow);
+      await UserNoteService.addToFollowList(idToFollow);
+  }
+
   return (
     <div className="profile">
       <div className="feed-container">
         {currentNotes.map((note, index) =>
             <Grid item xs={12} lg={6}>
             <UserNoteComponent index={index} userNote={note} userId={note.userId}/>
+            <AddIcon onClick={() => handleFollow(note.userId)}/>
           </Grid>
         )}
       </div>
