@@ -13,7 +13,6 @@ export default function Welcome() {
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId)
-    console.log("USER ID IS", userId)
 
   }, []);
 
