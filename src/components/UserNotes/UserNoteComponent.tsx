@@ -139,10 +139,15 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                                                     </IconButton>
                                                 </TableCell>
                                             </TableRow>,
-                                            <h3>HERE SHOULD BE AUDIO IF PDF</h3>,
                                             <><SpeechSection trigger={file.contentType?.toString().includes("pdf")}>
-                                                <h3>HERE IS THE AUDIO SECTION</h3>
-                                                <button id="getPDF" onClick={() => getPDFFile(file.url)}></button>
+                                                <h3>HERE IS THE AUDIO SECTION FOR PDF</h3>
+                                                <button id="getPDF" onClick={() => getPDFFile(file.url)}>Get Text</button>
+                                                <br />
+                                                <label>Speed</label>
+                                                <input type="number" name="spee" id="speed" min=".5" max="3" step=".5" value="1"></input>
+                                                <button id="play-button">Play</button>
+                                                <button id="pause-button">Pause</button>
+                                                <button id="stop-button">Stop</button>
                                             </SpeechSection></>
                                         ]
                                     ))
