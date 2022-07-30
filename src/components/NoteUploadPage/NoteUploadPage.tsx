@@ -141,7 +141,7 @@ export default function NoteUploadPage({options} : any) {
                         }}
                     />
                     <FormControl>
-                        <FormLabel sx={ { textAlign: "center", marginTop: 2 } }>Note Visibility</FormLabel>
+                        <FormLabel sx={ { textAlign: "center", marginTop: 2, color: "#fff" } }>Note Visibility</FormLabel>
                         <RadioGroup
                             defaultValue="private"
                             onChange={(e) => setRadioValue(e.target.value)}
