@@ -1,5 +1,5 @@
 import React, { useState, useEffect, SyntheticEvent } from 'react';
-import { Tabs, Tab, Typography, Box, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField } from "@mui/material";
+import { Tabs, Tab, Typography, Box, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField, Alert } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import LockIcon from '@mui/icons-material/Lock';
@@ -11,6 +11,7 @@ import UserNoteComponent from "./UserNotes/UserNoteComponent";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { FollowerAndFollowingTag } from './FollowerAndFollowingTag/FollowerAndFollowingTag';
+import { useLocation } from 'react-router-dom';
 const { v4: uuidv4 } = require('uuid');
 
 interface TabPanelProps {
@@ -48,12 +49,43 @@ export default function BasicTabs() {
   const [id, setId] = useState('');
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [pro, setPro] = useState(false)
+  const [hasError, setHasError] = useState(false)
+  const [success, setSuccess] = useState(false)
+
+
+  const location = useLocation();
+
+  async function getAndSetPro(){
+    setPro(await UserNoteService.getPro() )
+    console.log("DONE PRO")
+
+  }
+
 
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId);
     applyFilter();
     initializeFollowers();
+    getAndSetPro()
+    console.log("LOCATOIN", location.search)
+    let purchaseSucceeded = location.search === "?success"
+    let purchaseFailed = location.search === "?failure"
+    if(purchaseSucceeded){
+      setSuccess(true)
+    }
+    if(purchaseFailed){
+      setHasError(true)
+    }
+    const timer = setTimeout(() => {
+      setSuccess(false)
+      setHasError(false)
+
+    }, 4000);
+    return () => clearTimeout(timer);
+    
+
   }, []);
 
   async function initializeFollowers() {
@@ -79,6 +111,35 @@ export default function BasicTabs() {
     setValue(newValue);
   };
 
+  function handlePayment(){
+    let fetchBaseURL = process.env.REACT_APP_PROD_URL ? process.env.REACT_APP_PROD_URL: process.env.REACT_APP_SERVER_URL
+    let stripeURL =`${fetchBaseURL}/stripe-checkout`
+    fetch(stripeURL, {
+      method: "POST",
+      headers: {
+        "Content-type" : 'application/json'
+      },
+      body: JSON.stringify(
+        {id}
+      )
+    }).then(res => {
+      if (res.ok){
+        let x = res.json()
+        return x
+      } else{
+        return res.json().then(json => {
+          Promise.reject(json)
+        })
+      }
+    }).then(({url})=> {
+      window.location = url
+    }).catch(err => {
+      setHasError(true)
+      console.log("SOMETHING WENT WRONG", err)
+    })
+
+  }
+
   async function applyFilter() {
     try {
       let fromServer = await UserNoteService.getAllNotesByUserId();
@@ -94,6 +155,9 @@ export default function BasicTabs() {
 
   return (
     <Box key={uuidv4()} sx={{ width: '100%' }}>
+            {hasError &&<Alert severity="error" sx={{color: "black !important"}}>Something went wrong with your purchase</Alert>}
+            {success && <Alert severity="success" sx={{color: "black !important"}}>Success!  You now have professional mode enabled</Alert>}
+
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} 
         onChange={handleChange} 
@@ -164,7 +228,9 @@ export default function BasicTabs() {
       </div>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Settings
+        Edition: {pro? "Professional" : "Standard"}
+        {!pro && <div><Button variant="outlined" sx={ {marginTop: 2 } } onClick={handlePayment}>Click to purchase professional edition</Button></div> }
+        
       </TabPanel>
     </Box>
   );

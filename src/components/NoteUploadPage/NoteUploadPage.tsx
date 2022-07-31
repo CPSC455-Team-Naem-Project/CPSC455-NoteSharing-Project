@@ -1,4 +1,3 @@
-import Fileuploadsidebar from "../Fileuploadsidebar";
 import {FilePond, registerPlugin} from "react-filepond";
 import {SyntheticEvent, useEffect, useReducer, useState} from "react";
 import {
