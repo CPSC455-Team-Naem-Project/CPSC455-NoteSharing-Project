@@ -6,7 +6,6 @@ import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
 import UserNoteComponent from "./UserNotes/UserNoteComponent";
 import {defaultOptions} from '../constants/courses'
-import NoteGrid from "./NoteGrid";
 
 export default function Search() {
   const [ratingValue, setRatingValue] = useState(0);

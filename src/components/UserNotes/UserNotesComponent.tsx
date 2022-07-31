@@ -26,9 +26,6 @@ export default function UserNotesComponent() {
 
   return (
       <>
-        {/* <Navbar/>*/}
-        {/*<NoteGrid notes = {noteArr} options = {defaultOptions}/> */}
-
         {
           (notes && notes.length > 0) ?
               <Grid container spacing={2}>

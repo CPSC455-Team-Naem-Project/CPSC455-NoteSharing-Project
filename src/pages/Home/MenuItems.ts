@@ -5,7 +5,6 @@ import UserNotesComponent from "../../components/UserNotes/UserNotesComponent";
 import Feed from "../../components/Feed";
 import Search from "../../components/Search";
 import Profile from "../../components/Profile";
-import Notepdfview from "../../components/Notepdfview";
 import React from "react";
 import {OverridableComponent} from "@mui/material/OverridableComponent";
 
@@ -38,12 +37,6 @@ export const HomeComponents: HomeComponentsType = {
         display: 'Feed',
         icon: FeedIcon,
         link: '/feed'
-    },
-    [MENU.VIEW_NOTE]: {
-        component: Notepdfview,
-        display: 'View Note',
-        icon: Note,
-        link: '/view-note'
     },
     [MENU.SEARCH]: {
         component: Search,

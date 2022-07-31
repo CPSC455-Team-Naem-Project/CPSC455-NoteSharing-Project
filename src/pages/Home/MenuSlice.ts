@@ -7,7 +7,6 @@ export enum MENU {
   FEED,
   NOTES,
   SEARCH,
-  VIEW_NOTE
 }
 
 export interface MenuState {
