@@ -20,6 +20,7 @@ const UserNoteService = {
     saveNote: async (userNote: any): Promise<UserNote> => {
         const {userId, userEmail, userDisplayName} = UserNoteService.getUserCredentials();
         const data = {...userNote, userEmail, userId, userDisplayName};
+        console.log("DATA IS", data)
         const postData = await axios.post<UserNote>(`${BASE_URL}/upload`, data)
         return postData.data;
     },

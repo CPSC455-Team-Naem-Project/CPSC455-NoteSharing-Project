@@ -1,12 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import userNoteReducer from '../reducers/Usernotesreducer';
 import userNotesReducer from '../reducers/UserNoteSlice';
 import menuReducer from '../pages/Home/MenuSlice';
 
 export const store = configureStore({
   reducer: {
     menu: menuReducer,
-    userNotes: userNoteReducer,
     userNotes_: userNotesReducer
   },
 });

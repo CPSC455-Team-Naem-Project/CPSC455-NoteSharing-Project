@@ -12,8 +12,6 @@ import {
     TableRow,
     Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Rating, Box, Stack
 } from "@mui/material";
-import { getStorage, ref, uploadBytes, uploadString, getDownloadURL, FullMetadata  } from "firebase/storage";
-import {Download} from '@mui/icons-material';
 
 // FilePond
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
@@ -22,9 +20,6 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import {FilePondFile} from "filepond";
-import { Note } from "../Noteteaser";
-import { faImage, faFilePdf } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from "react-redux";
 import { defaultOptions } from "../../constants/courses";
 import UserNoteService from "../../services/UserNote.service";
@@ -32,9 +27,20 @@ import {getAuth} from "firebase/auth";
 import {UserNoteCourseAttributes, UserNoteFile} from "../../models/UserNote";
 import UploadedFileTable from "./UploadedFileTable";
 import { any } from "prop-types";
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateType);
+
+interface Note {
+    title: string
+    iconType: IconDefinition
+    course: any
+    visibility: string,
+    rating: number
+    id: number
+}
+
 
 //['.doc','.pdf','image/*','video/*']
 export default function NoteUploadPage({options} : any) {
