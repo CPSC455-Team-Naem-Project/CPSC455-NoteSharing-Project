@@ -40,8 +40,6 @@ export default function Search() {
     }
 
     setNewFilteredNotes(notesFromServer)
-
-
   }
 
 
