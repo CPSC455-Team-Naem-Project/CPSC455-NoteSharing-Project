@@ -1,10 +1,10 @@
 import {getAuth} from "firebase/auth";
 import axios, {Axios} from "axios";
 import {FilePondFile} from "filepond";
-import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
 import {initializeApp} from "firebase/app";
 import firebaseConfig from './config';
 import {UserNote, UserNoteAttributes, UserNoteFile} from "../models/UserNote";
+const {getDownloadURL, getStorage, ref, uploadBytes} = require("firebase/storage");
 
 initializeApp(firebaseConfig)
 
@@ -124,7 +124,7 @@ const UserNoteService = {
         try {
             const {userId, userDisplayName} = UserNoteService.getUserCredentials();
             const url = concatUrl(`removeFollower/${userId}/${followerName}`)
-            const response = await axios.post(url);
+            const response = await axios.delete(url);
             return response.status === 200;
         } catch (e) {
             console.log(e)
@@ -136,7 +136,7 @@ const UserNoteService = {
         try {
             const {userId, userDisplayName} = UserNoteService.getUserCredentials();
             const url = concatUrl(`removeFollowing/${userId}/${followingName}`)
-            const response = await axios.post(url);
+            const response = await axios.delete(url);
             return response.status === 200;
         } catch (e) {
             console.log(e)
@@ -154,6 +154,12 @@ const UserNoteService = {
             console.log(e);
             return false
         }
+    },
+
+    saveNoteToSavedNotes: async (userNote: any): Promise<UserNote> => {
+        console.log("Saved Note is: ", userNote)
+        const postData = await axios.post<UserNote>(`${BASE_URL}/saveNote`, userNote)
+        return postData.data;
     },
 
     editNoteById: async (note: UserNote): Promise<boolean> => {

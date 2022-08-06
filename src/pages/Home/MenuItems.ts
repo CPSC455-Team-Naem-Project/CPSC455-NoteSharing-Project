@@ -28,7 +28,7 @@ export const HomeComponents: HomeComponentsType = {
     },
     [MENU.NOTES]: {
         component: UserNotesComponent,
-        display: 'My Notes',
+        display: 'Saved Notes',
         icon: FileCopy,
         link: '/notes'
     },

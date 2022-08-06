@@ -35,12 +35,11 @@ const Feed = () => {
   return (
     <div className="profile">
       <div className="feed-container">
-        {currentNotes.map((note, index) =>
-            <Grid item xs={12} lg={6}>
-            <UserNoteComponent index={index} userNote={note} userId={note.userId}/>
-            <AddIcon onClick={() => handleFollow(note.userId)}/>
-          </Grid>
-        )}
+          {currentNotes.map((note, index) =>
+              <Grid item xs={12} lg={6}>
+              <UserNoteComponent index={index} userNote={note} userId={note.userId}/>
+            </Grid>
+          )}
       </div>
     </div>
   );

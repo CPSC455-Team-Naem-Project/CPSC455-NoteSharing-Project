@@ -299,6 +299,17 @@ h2 {
 }
 
 .feed-container {
-  padding: 30px;
+  position: absolute;
   margin: auto;
+  width: 80%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: $background-color-darkest;
+  border-radius: 15px;
+}
+
+.note {
+  margin: 90px;
+  background-image: linear-gradient(75deg, rgba($pink-accent, 0.4), rgba($blue-accent, 0.4));
+  border-radius: 15px;
 }

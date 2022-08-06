@@ -146,8 +146,8 @@ export default function BasicTabs() {
       let notesFromServer = fromServer.data;
       setNewFilteredNotes(notesFromServer);
 
-      notesFromServer.filter((note: any) => note.visibility === false)
-      setPrivateNotes(notesFromServer);
+      let pNotes = notesFromServer.filter((note: any) => note.visibility === false)
+      setPrivateNotes(pNotes);
     } catch (error) {
       console.log(error);
     }

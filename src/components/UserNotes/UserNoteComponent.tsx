@@ -11,7 +11,7 @@ import {
     TableHead,
     TableRow, Typography
 } from "@mui/material";
-import { Attachment, Delete, Download, Edit, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { Attachment, Delete, Download, Add, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import UserNoteService from "../../services/UserNote.service";
 import { useDispatch } from "react-redux";
 import { deleteNote } from "../../reducers/UserNoteSlice";
@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SpeechSection from "./SpeechSection";
 import getPDFFile from "./SpeechSection";
+
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -57,13 +58,19 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                 .then(() => dispatch(deleteNote(index)));
     }
 
-    const editUserNote = () => {
-        nav('/edit-note/' + userNote._id, { state: { userNote } })
+    const saveNote = () => {
+        UserNoteService.saveNoteToSavedNotes(userNote)
+            .then((note) => {
+                console.log("Saved Note with id:", userNote._id);
+                console.log("Note saved is: ", note);
+            })
+            .catch((error) => console.error(error));
     }
 
     return (
         <Card
             raised
+            className="note"
         >
 
             <CardHeader
@@ -87,14 +94,15 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                     <IconButton onClick={deleteUserNote}>
                         <Delete />
                     </IconButton>
-                    <IconButton onClick={editUserNote} aria-label="share">
-                        <Edit />
+                    <IconButton aria-label="add" onClick={saveNote}>
+                        <Add />
                     </IconButton>
                 </div>
                 }
                 <ExpandMore
                     expand={expanded}
                     onClick={() => setExpanded(!expanded)}
+                    className="button"
                 >
                     <ExpandMoreIcon />
                 </ExpandMore>
