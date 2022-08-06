@@ -87,7 +87,8 @@ const UserNoteService = {
     },
 
     getSavedNotes: async () => {
-        return await axios.get(`${BASE_URL}/getSavedNotes`)
+        const {userId} = UserNoteService.getUserCredentials();
+        return await axios.get(`${BASE_URL}/getSavedNotes/${userId}`)
     },
 
     getFollowersByUserId: async () => {
