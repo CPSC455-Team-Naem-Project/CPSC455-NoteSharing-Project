@@ -19,14 +19,14 @@ export default function Search() {
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId)
-
+    applyFilter();
   }, []);
 
 
 
   async function applyFilter(){
 
-    let fromServer = await UserNoteService.getPublicFilteredNotes()
+    let fromServer = await UserNoteService.getSavedNotes()
     let notesFromServer = fromServer.data
     notesFromServer = notesFromServer.filter((note: any) => note.userId !== id)
     console.log("SERVICE IS", notesFromServer)
