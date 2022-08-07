@@ -55,7 +55,7 @@ export default function NoteUploadPage({options} : any) {
         name: ""
     })
     const [ratingValue, setRatingValue] = useState(5);
-    const [acceptedFileTypes2, setAcceptedFileTypes2] = useState(['.pdf','image/*','video/*'])
+    const [acceptedFileTypes2, setAcceptedFileTypes2] = useState(['application/pdf','image/*','video/*'])
     const [pro, setPro] = useState(false)
 
     const dispatch = useDispatch()
@@ -83,7 +83,8 @@ export default function NoteUploadPage({options} : any) {
                     setPro(true)
                     console.log("Settign Pro")
                     //Need to check with chrome but pretty sure its the application/msword one
-                    setAcceptedFileTypes2(['.doc', '.docx', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document','.pdf','image/*','video/*'])
+                    
+                    setAcceptedFileTypes2(['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document','image/*','video/*', 'application/pdf'])
                     console.log("FILETYPES NOW", acceptedFileTypes2)
                 }
 
