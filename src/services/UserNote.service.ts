@@ -178,15 +178,14 @@ const UserNoteService = {
         }
     },
 
-    getPublicFilteredNotes: async ()=> {
-        return await axios.get(`${BASE_URL}/search`)
+    getPublicFilteredNotes: async (filterObject: any)=> {
+            return await axios.post(`${BASE_URL}/search`, filterObject)
+ 
     },
 
     getPro: async () : Promise<boolean>=> {
         const {userId} = UserNoteService.getUserCredentials();
         const response = await axios.get(`${BASE_URL}/getpro/${userId}`)
-        console.log("RESPS", response)
-
         return response.data.proStatus
     },
 

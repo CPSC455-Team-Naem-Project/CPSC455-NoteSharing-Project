@@ -5,7 +5,7 @@ import menuReducer from '../pages/Home/MenuSlice';
 export const store = configureStore({
   reducer: {
     menu: menuReducer,
-    userNotes_: userNotesReducer
+    userNotes_: userNotesReducer,
   },
 });
 

@@ -57,8 +57,11 @@ export default function BasicTabs() {
   const location = useLocation();
 
   async function getAndSetPro(){
+    try{
     setPro(await UserNoteService.getPro() )
-    console.log("DONE PRO")
+    } catch(e){
+      setHasError(true)
+    }
 
   }
 
@@ -69,7 +72,6 @@ export default function BasicTabs() {
     applyFilter();
     initializeFollowers();
     getAndSetPro()
-    console.log("LOCATOIN", location.search)
     let purchaseSucceeded = location.search === "?success"
     let purchaseFailed = location.search === "?failure"
     if(purchaseSucceeded){
@@ -87,6 +89,14 @@ export default function BasicTabs() {
     
 
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasError(false)
+
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [hasError]);
 
   async function initializeFollowers() {
     let updatedFollowers = await UserNoteService.getFollowersByUserId();
@@ -135,7 +145,6 @@ export default function BasicTabs() {
       window.location = url
     }).catch(err => {
       setHasError(true)
-      console.log("SOMETHING WENT WRONG", err)
     })
 
   }
@@ -149,7 +158,7 @@ export default function BasicTabs() {
       let pNotes = notesFromServer.filter((note: any) => note.visibility === false)
       setPrivateNotes(pNotes);
     } catch (error) {
-      console.log(error);
+      setHasError(true)
     }
   }
 

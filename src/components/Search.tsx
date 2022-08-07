@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField } from "@mui/material";
+import { Alert, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField } from "@mui/material";
 import { SetStateAction, SyntheticEvent, useEffect, useState } from "react";
 import { useSelector, useStore } from "react-redux";
 import { useAppSelector } from "../app/hooks";
@@ -12,34 +12,45 @@ export default function Search() {
   const [labelValue, setLabelValue] = useState( null)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
   const [id, setId] = useState('')
+  const [hasError, setHasError] = useState(false)
+
 
   const notes = useAppSelector(selectUserNotes);
-  console.log("NOTES ARE", notes)
 
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId)
-    applyFilter();
+    applyFilter(userId);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasError(false)
+
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [hasError]);
 
 
-  async function applyFilter(){
 
-    let fromServer = await UserNoteService.getSavedNotes()
-    let notesFromServer = fromServer.data
-    notesFromServer = notesFromServer.filter((note: any) => note.userId !== id)
-    console.log("SERVICE IS", notesFromServer)
-    
-    if(labelValue !==  null) {
-      // @ts-ignore
-      notesFromServer = notesFromServer.filter( note => note.rating >= ratingValue && note.course.name === labelValue.name  )
+  async function applyFilter(userId: string){
 
-    } else{
-      notesFromServer = notesFromServer.filter( (note: any) => note.rating >= ratingValue  )
-    }
+    let filterObject = {ratingValue,
+      labelValue,
+      id: userId
+      }
+try{
+  let fromServer = await UserNoteService.getPublicFilteredNotes(filterObject)
+  let notesFromServer = fromServer.data
+  notesFromServer = notesFromServer.filter((note: any) => note.userId !== id)
+  console.log("SERVICE IS", notesFromServer)
 
-    setNewFilteredNotes(notesFromServer)
+  setNewFilteredNotes(notesFromServer)
+
+} catch(e) {
+  setHasError(true)
+}
+
   }
 
 
@@ -50,6 +61,7 @@ export default function Search() {
   
     return(
      <div>
+                  {hasError &&<Alert severity="error" sx={{color: "black !important"}}>Something went wrong</Alert>}
      <div
         style={{
           display: 'flex',
@@ -80,7 +92,7 @@ export default function Search() {
           sx={{ width: 200, marginBottom: 0 }}
           renderInput={(params) => <TextField {...params} label="Subject" />}
         />
-      <Button variant="outlined"  sx={ {marginTop: 2 } } onClick={applyFilter}>Filter</Button>
+      <Button variant="outlined"  sx={ {marginTop: 2 } } onClick={() => applyFilter(id)}>Filter</Button>
 
       </div>
       <Grid container spacing={2}>
