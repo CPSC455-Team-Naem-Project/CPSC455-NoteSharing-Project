@@ -62,8 +62,6 @@ export default function NoteUploadPage({ options }: any) {
     'video/*',
   ]);
 
-  const dispatch = useDispatch();
-
   async function setFileHelper(fileItems: any) {
     let isPro = await UserNoteService.getPro();
     if (isPro) {
@@ -72,9 +70,9 @@ export default function NoteUploadPage({ options }: any) {
       // @ts-ignore
       let files = fileItems.filter(
         (file: { file: { type: string; }; }) =>
-          file.file.type !=
+          file.file.type !==
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document' &&
-          file.file.type != 'application/msword'
+          file.file.type !== 'application/msword'
       );
       if (files.length > 0) {
         setFiles(files);

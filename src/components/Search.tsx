@@ -1,6 +1,5 @@
-import { Alert, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField } from "@mui/material";
-import { SetStateAction, SyntheticEvent, useEffect, useState } from "react";
-import { useSelector, useStore } from "react-redux";
+import { Alert, Autocomplete, Button, Grid, Rating, TextField } from "@mui/material";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
@@ -13,9 +12,6 @@ export default function Search() {
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
   const [id, setId] = useState('')
   const [hasError, setHasError] = useState(false)
-
-
-  const notes = useAppSelector(selectUserNotes);
 
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();

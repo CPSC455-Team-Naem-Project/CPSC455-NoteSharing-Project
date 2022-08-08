@@ -1,5 +1,5 @@
 import {getAuth} from "firebase/auth";
-import axios, {Axios} from "axios";
+import axios from "axios";
 import {FilePondFile} from "filepond";
 import {initializeApp} from "firebase/app";
 import firebaseConfig from './config';
@@ -127,7 +127,7 @@ const UserNoteService = {
 
     removeFromFollowers: async (followerName: string): Promise<boolean> => {
         try {
-            const {userId, userDisplayName} = UserNoteService.getUserCredentials();
+            const {userId} = UserNoteService.getUserCredentials();
             const url = concatUrl(`removeFollower/${userId}/${followerName}`)
             const response = await axios.delete(url);
             return response.status === 200;
@@ -139,7 +139,7 @@ const UserNoteService = {
 
     unfollowUser: async (followingName: string): Promise<boolean> => {
         try {
-            const {userId, userDisplayName} = UserNoteService.getUserCredentials();
+            const {userId} = UserNoteService.getUserCredentials();
             const url = concatUrl(`removeFollowing/${userId}/${followingName}`)
             const response = await axios.delete(url);
             return response.status === 200;

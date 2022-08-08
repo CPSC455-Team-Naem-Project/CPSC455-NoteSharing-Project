@@ -5,7 +5,7 @@ import {
   Autocomplete,
   Box,
   Button,
-  Grid, Rating, Stack, TextField, Typography
+  Grid, Rating, Stack, TextField
 } from "@mui/material";
 import UserNoteComponent from "./UserNoteComponent";
 import {useDispatch} from "react-redux";
@@ -17,7 +17,6 @@ export default function UserNotesComponent() {
   const [ratingValue, setRatingValue] = useState(0);
   const [labelValue, setLabelValue] = useState( null)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
-  const [id, setId] = useState('')
   
   const notes = useAppSelector(selectUserNotes);
   console.log("NOTES RAN")

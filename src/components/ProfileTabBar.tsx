@@ -1,11 +1,8 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
-import { Tabs, Tab, Typography, Box, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField, Alert } from "@mui/material";
+import React, { useState, useEffect} from 'react';
+import { Tabs, Tab, Typography, Box, Button, Grid, Alert } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import LockIcon from '@mui/icons-material/Lock';
-import {defaultOptions} from '../constants/courses'
-import { useAppSelector } from "../app/hooks";
-import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
 import UserNoteComponent from "./UserNotes/UserNoteComponent";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -42,8 +39,6 @@ function TabPanel(props: TabPanelProps) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  const [ratingValue, setRatingValue] = useState(0);
-  const [labelValue, setLabelValue] = useState(null)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
   const [privateNotes, setPrivateNotes] = useState([]);
   const [id, setId] = useState('');
