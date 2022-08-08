@@ -17,26 +17,25 @@ export default function UserNotesComponent() {
   const [ratingValue, setRatingValue] = useState(0);
   const [labelValue, setLabelValue] = useState( null)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
+  const [savedNotes, setSavedNotes] = useState([])
   const [id, setId] = useState('')
   
-  const notes = useAppSelector(selectUserNotes);
-  console.log("NOTES RAN")
   let notesFromServer: any[] = []
   const dispatch = useDispatch();
 
   // to get initial user notes
   useEffect(() => {
     const getInitialNotes = async () => {
-      const notesData = await UserNoteService.getAllNotesByUserId();
-      return notesData.data;
+      console.log("BEFORE GET SAVED NOTES")
+      let notes = await UserNoteService.getSavedNotes();
+      return notes.data
     }
-
-    getInitialNotes().then(notes =>{
-
-     dispatch(setNotes(notes))
-     setNewFilteredNotes(notes)
-     console.log("DONE")
-    })
+    getInitialNotes()
+      .then((notes) => {
+        dispatch(setNotes(notes))
+        setSavedNotes(notes)
+        setNewFilteredNotes(notes)
+      })    
   }, [])
 
 
@@ -44,10 +43,10 @@ export default function UserNotesComponent() {
     
     if(labelValue !==  null) {
       // @ts-ignore
-      notesFromServer = notes.filter( note => note.rating >= ratingValue && note.course.name === labelValue.name  )
+      notesFromServer = savedNotes.filter( note => note.rating >= ratingValue && note.course.name === labelValue.name  )
 
     } else{
-      notesFromServer = notes.filter( (note: any) => note.rating >= ratingValue  )
+      notesFromServer = savedNotes.filter( (note: any) => note.rating >= ratingValue  )
     }
     // @ts-ignore
     setNewFilteredNotes(notesFromServer)
@@ -62,16 +61,10 @@ export default function UserNotesComponent() {
   return (
       <>
         {
-          (notes && notes.length > 0) ?
+          (savedNotes && savedNotes.length > 0) ?
           <div>
             <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          border: '5px solid black',
-        }}
+        className="filter"
       >
         <p>Filter by:</p>
         <Rating

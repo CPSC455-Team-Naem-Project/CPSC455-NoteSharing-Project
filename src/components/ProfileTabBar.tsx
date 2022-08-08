@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, Typography, Box, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField, Alert } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
@@ -95,11 +95,6 @@ export default function BasicTabs() {
     setFollowing(updatedFollowing.data);
   }
 
-  async function followUser(idToFollow: string) {
-    await UserNoteService.followUser(idToFollow);
-    await UserNoteService.addToFollowList(idToFollow);
-  }
-
   function a11yProps(index: number) {
     return {
       id: `simple-tab-${index}`,
@@ -164,11 +159,10 @@ export default function BasicTabs() {
         aria-label="tabs"
         textColor="inherit"
         indicatorColor="primary">
-          <Tab icon={<TableRowsIcon/>} label="All Notes" {...a11yProps(0)}/>
+          <Tab icon={<TableRowsIcon/>} label="My Notes" {...a11yProps(0)}/>
           <Tab icon={<LockIcon/>} label="Private Notes" {...a11yProps(1)} />
           <Tab icon={<PeopleAltIcon/>}label="Followers" {...a11yProps(2)} />
           <Tab icon={<PersonAddAltIcon/>}label="Following" {...a11yProps(3)} />
-          <Tab icon={<SettingsIcon/>}label="Settings" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

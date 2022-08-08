@@ -77,6 +77,12 @@ const UserNoteService = {
         return response.data;
     },
 
+    getUserIdByNoteId: async (noteId: string) => {
+        const url = concatUrl(`getUserIdByNoteId/${noteId}`)
+        const response = await axios.get(url)
+        return response.data;
+    },
+
     getMostRecentNotes: async () => {
         return await axios.get(`${BASE_URL}/getMostRecentNotes`)
     },

@@ -5,10 +5,6 @@ import ProfileTabBar from './ProfileTabBar';
 
 const Profile = () => {
   const userCredentials = UserNoteService.getUserCredentials();
-  
-  const handleTabs = () => {
-    
-  }
 
   useEffect(() => {
   }, [])

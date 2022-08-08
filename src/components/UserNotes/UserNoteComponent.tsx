@@ -15,7 +15,7 @@ import { Attachment, Delete, Download, Add, ExpandMore as ExpandMoreIcon } from 
 import UserNoteService from "../../services/UserNote.service";
 import { useDispatch } from "react-redux";
 import { deleteNote } from "../../reducers/UserNoteSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SpeechSection from "./SpeechSection";
 import getPDFFile from "./SpeechSection";
@@ -42,10 +42,30 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
     const { userNote, index, userId } = props;
     const nav = useNavigate();
     const [expanded, setExpanded] = useState(false);
-    console.log("IN NOTE")
+    const [disableFollow, setDisableFollow] = useState(false);
+    const [disableDelete, setDisableDelete] = useState(true);
     const userControledNote = !userId || userId === userNote.userId ? true : false
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        async function init() {
+            let nameToFollow = userNote.userDisplayName;
+            let following = await UserNoteService.getFollowingByUserId();
+            const { userId, userDisplayName } = await UserNoteService.getUserCredentials();
+            
+            // If user doesn't follow and isn't themselves, follow.
+            if (following.data.includes(nameToFollow) || nameToFollow === userDisplayName) {
+                setDisableFollow(true);
+            }
+
+            // If users' note, enable delete button
+            if (userId === userNote.userId) {
+                setDisableDelete(false);
+            }
+        }
+        init();
+    }, [])
 
     const downloadFile = (url: string) => {
         const win = window.open(url, '_blank');
@@ -65,6 +85,20 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                 console.log("Note saved is: ", note);
             })
             .catch((error) => console.error(error));
+    }
+
+    async function followUser() {
+        let nameToFollow = userNote.userDisplayName;
+        let following = await UserNoteService.getFollowingByUserId();
+        const { userDisplayName } = await UserNoteService.getUserCredentials();
+        
+        // If user doesn't follow and isn't themselves, follow.
+        if (!following.data.includes(nameToFollow) && 
+            nameToFollow !== userDisplayName) {
+                let idToFollow = await UserNoteService.getUserIdByNoteId(userNote._id);
+                await UserNoteService.followUser(idToFollow);
+                await UserNoteService.addToFollowList(idToFollow);
+        }
     }
 
     return (
@@ -91,12 +125,13 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
 
             <CardActions disableSpacing>
                 {userControledNote && <div>
-                    <IconButton onClick={deleteUserNote}>
+                    <IconButton onClick={deleteUserNote} disabled={disableDelete}>
                         <Delete />
                     </IconButton>
                     <IconButton aria-label="add" onClick={saveNote}>
                         <Add />
                     </IconButton>
+                    <Button id="follow-button" onClick={() => followUser()} variant="outlined" disabled={disableFollow}>Follow</Button>
                 </div>
                 }
                 <ExpandMore

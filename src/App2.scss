@@ -309,7 +309,17 @@ h2 {
 }
 
 .note {
-  margin: 90px;
+  margin: 30px;
   background-image: linear-gradient(75deg, rgba($pink-accent, 0.4), rgba($blue-accent, 0.4));
   border-radius: 15px;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-image: linear-gradient(75deg, rgba($background-color-darkest, 0.4),  rgba($pink-accent, 0.4), rgba($background-color-darkest, 0.4), rgba($blue-accent, 0.4), rgba($background-color-darkest, 0.4));
+  border-radius: 15px;
+  padding: 10px;
 }

@@ -19,14 +19,11 @@ export default function Search() {
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId)
-    applyFilter();
   }, []);
 
-
-
+  // Filters notes that don't belong to this user
   async function applyFilter(){
-
-    let fromServer = await UserNoteService.getSavedNotes()
+    let fromServer = await UserNoteService.getPublicFilteredNotes()
     let notesFromServer = fromServer.data
     notesFromServer = notesFromServer.filter((note: any) => note.userId !== id)
     console.log("SERVICE IS", notesFromServer)
@@ -51,13 +48,7 @@ export default function Search() {
     return(
      <div>
      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          border: '5px solid black',
-        }}
+        className="filter"
       >
         <p>Filter by:</p>
         <Rating
