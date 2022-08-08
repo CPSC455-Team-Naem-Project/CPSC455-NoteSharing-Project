@@ -10,7 +10,7 @@ import NoteUploadPage from "./components/NoteUploadPage/NoteUploadPage";
 import {HomeComponents} from "./pages/Home/MenuItems";
 import {MENU} from "./pages/Home/MenuSlice";
 import {createTheme, ThemeProvider} from "@mui/material";
-import EditNotePage from "./pages/EditNote/EditNotePage";
+import EditNotePage from "./components/NoteUploadPage/EditNotePage";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
