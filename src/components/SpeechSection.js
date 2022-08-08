@@ -50,7 +50,7 @@ function SpeechSection() {
         }
         if (speechSynthesis.speaking) return;
         utterance.text = text;
-        utterance.rate = state;
+        utterance.rate = state || 1;
         textInput.disabled = true;
         speechSynthesis.speak(utterance);
     }
