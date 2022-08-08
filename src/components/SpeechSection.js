@@ -4,11 +4,11 @@ import './SpeechSection.css'
 function SpeechSection() {
     const [text, setText] = useState('');
     //const {speak} = useSpeechSynthesis();
-    const playButton = document.getElementById('play-button');
-    const pauseButton = document.getElementById('pause-button');
-    const stopButton = document.getElementById('stop-button');
+    //const playButton = document.getElementById('play-button');
+    //const pauseButton = document.getElementById('pause-button');
+    //const stopButton = document.getElementById('stop-button');
     const textInput = document.getElementById('text-input');
-    const speedInput = document.getElementById('speed');
+    //const speedInput = document.getElementById('speed');
     let currentCharacter;
     //let speedValue;
 
@@ -23,7 +23,8 @@ function SpeechSection() {
     const [state, setSlide] = useState(1); //1 is defaultState
 
     const handleSpeak = () => {
-        playText(textInput.value);
+        playText(text);
+        //playText(textInput.value);
     }
 
     //pauseButton.addEventListener('click', pauseText)
@@ -37,7 +38,11 @@ function SpeechSection() {
 
     const utterance = new SpeechSynthesisUtterance()
     utterance.addEventListener('end', () => {
-        textInput.disabled = false;
+        try {
+            textInput.disabled = false;
+        } catch (e) {
+            console.log("textInput not yet defined.")
+        }
     })
     utterance.addEventListener('boundary', e => {
         currentCharacter = e.charIndex;
@@ -51,7 +56,11 @@ function SpeechSection() {
         if (speechSynthesis.speaking) return;
         utterance.text = text;
         utterance.rate = state || 1;
-        textInput.disabled = true;
+        try {
+            textInput.disabled = true;
+        } catch (e) {
+            console.log("textInput not yet defined.");
+        }
         speechSynthesis.speak(utterance);
     }
 
@@ -111,7 +120,7 @@ function SpeechSection() {
     return (<>
         <h3 className="description">Copy text from your notes and paste it below to listen:</h3>
         {/* <textarea id="text-input" className="textAreaStyle" onChange={(e) => { setText(e.target.value) }}></textarea> */}
-        <textarea id="text-input" className="textAreaStyle"></textarea>
+        <textarea id="text-input" className="textAreaStyle" onChange={(e) => { setText(e.target.value) }}></textarea>
         {/* <button className="buttonStyle" onClick={() => { handleSpeak() }}>Listen</button> */}
         <button id="play-button" className="buttonStyle" onClick={() => { handleSpeak() }}>Listen</button>
         <button id="pause-button" className="buttonStyle" onClick={() => { handlePause() }}>Pause</button>
