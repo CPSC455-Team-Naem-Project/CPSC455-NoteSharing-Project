@@ -5,23 +5,28 @@ import { useEffect, useState } from 'react';
 
 export const FollowerAndFollowingTag = (props: { followerName: any }) => {
     const { followerName } = props;
-    const [test, setTest] = useState(false);
+    const [unfollowButton, setUnfollowButton] = useState(true);
 
     useEffect(() => {
-
-    }, []);
+        async function init() {
+            const followingFromServer = await UserNoteService.getFollowingByUserId();
+            const following = followingFromServer.data
+            if (!following.includes(followerName)) {
+                setUnfollowButton(false);
+            }
+        }
+        init()
+    })
 
     async function unfollow() {
         UserNoteService.removeFromFollowers(followerName);
         UserNoteService.unfollowUser(followerName);
-        setTest(true);
-        console.log("render");
     }
 
     return (
          <div className="follower-following-container">
              {followerName}
-             <Button 
+             {unfollowButton && <Button 
              id="unfollow-button" 
              onClick={unfollow} 
              variant="outlined"
@@ -29,7 +34,7 @@ export const FollowerAndFollowingTag = (props: { followerName: any }) => {
                  m: 2
              }}
              size="small"
-             >Unfollow</Button>
+             >Unfollow</Button>}
          </div>
     );
 }
