@@ -3,9 +3,6 @@ import { Tabs, Tab, Typography, Box, Autocomplete, Button, Checkbox, FormControl
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import LockIcon from '@mui/icons-material/Lock';
-import {defaultOptions} from '../constants/courses'
-import { useAppSelector } from "../app/hooks";
-import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
 import UserNoteComponent from "./UserNotes/UserNoteComponent";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -42,8 +39,6 @@ function TabPanel(props: TabPanelProps) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  const [ratingValue, setRatingValue] = useState(0);
-  const [labelValue, setLabelValue] = useState(null)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
   const [privateNotes, setPrivateNotes] = useState([]);
   const [id, setId] = useState('');
@@ -57,8 +52,11 @@ export default function BasicTabs() {
   const location = useLocation();
 
   async function getAndSetPro(){
+    try{
     setPro(await UserNoteService.getPro() )
-    console.log("DONE PRO")
+    } catch(e){
+      setHasError(true)
+    }
 
   }
 
@@ -69,7 +67,6 @@ export default function BasicTabs() {
     applyFilter();
     initializeFollowers();
     getAndSetPro()
-    console.log("LOCATOIN", location.search)
     let purchaseSucceeded = location.search === "?success"
     let purchaseFailed = location.search === "?failure"
     if(purchaseSucceeded){
@@ -87,6 +84,14 @@ export default function BasicTabs() {
     
 
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasError(false)
+
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [hasError]);
 
   async function initializeFollowers() {
     let updatedFollowers = await UserNoteService.getFollowersByUserId();
@@ -130,7 +135,6 @@ export default function BasicTabs() {
       window.location = url
     }).catch(err => {
       setHasError(true)
-      console.log("SOMETHING WENT WRONG", err)
     })
 
   }
@@ -144,7 +148,7 @@ export default function BasicTabs() {
       let pNotes = notesFromServer.filter((note: any) => note.visibility === false)
       setPrivateNotes(pNotes);
     } catch (error) {
-      console.log(error);
+      setHasError(true)
     }
   }
 

@@ -10,7 +10,6 @@ import {Link, Outlet, useNavigate} from "react-router-dom";
 
 export const Home = () => {
     const dispatch = useDispatch();
-    const nav = useNavigate();
     const currentMenu = useAppSelector(selectCurrentMenu);
 
     const setMenu = (menuItem: MENU) => {

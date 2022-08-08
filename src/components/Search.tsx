@@ -1,6 +1,5 @@
-import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField } from "@mui/material";
-import { SetStateAction, SyntheticEvent, useEffect, useState } from "react";
-import { useSelector, useStore } from "react-redux";
+import { Alert, Autocomplete, Button, Grid, Rating, TextField } from "@mui/material";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import { selectUserNotes } from "../reducers/UserNoteSlice";
 import UserNoteService from "../services/UserNote.service";
@@ -12,31 +11,42 @@ export default function Search() {
   const [labelValue, setLabelValue] = useState( null)
   const [newFilteredNotes, setNewFilteredNotes] = useState([])
   const [id, setId] = useState('')
-
-  const notes = useAppSelector(selectUserNotes);
-  console.log("NOTES ARE", notes)
+  const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     const {userId} = UserNoteService.getUserCredentials();
     setId(userId)
+    applyFilter(userId);
   }, []);
 
-  // Filters notes that don't belong to this user
-  async function applyFilter(){
-    let fromServer = await UserNoteService.getPublicFilteredNotes()
-    let notesFromServer = fromServer.data
-    notesFromServer = notesFromServer.filter((note: any) => note.userId !== id)
-    console.log("SERVICE IS", notesFromServer)
-    
-    if(labelValue !==  null) {
-      // @ts-ignore
-      notesFromServer = notesFromServer.filter( note => note.rating >= ratingValue && note.course.name === labelValue.name  )
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasError(false)
 
-    } else{
-      notesFromServer = notesFromServer.filter( (note: any) => note.rating >= ratingValue  )
-    }
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [hasError]);
 
-    setNewFilteredNotes(notesFromServer)
+
+
+  async function applyFilter(userId: string){
+
+    let filterObject = {ratingValue,
+      labelValue,
+      id: userId
+      }
+try{
+  let fromServer = await UserNoteService.getPublicFilteredNotes(filterObject)
+  let notesFromServer = fromServer.data
+  notesFromServer = notesFromServer.filter((note: any) => note.userId !== id)
+  console.log("SERVICE IS", notesFromServer)
+
+  setNewFilteredNotes(notesFromServer)
+
+} catch(e) {
+  setHasError(true)
+}
+
   }
 
 
@@ -47,6 +57,7 @@ export default function Search() {
   
     return(
      <div>
+                  {hasError &&<Alert severity="error" sx={{color: "black !important"}}>Something went wrong</Alert>}
      <div
         className="filter"
       >
@@ -71,7 +82,7 @@ export default function Search() {
           sx={{ width: 200, marginBottom: 0 }}
           renderInput={(params) => <TextField {...params} label="Subject" />}
         />
-      <Button variant="outlined"  sx={ {marginTop: 2 } } onClick={applyFilter}>Filter</Button>
+      <Button variant="outlined"  sx={ {marginTop: 2 } } onClick={() => applyFilter(id)}>Filter</Button>
 
       </div>
       <Grid container spacing={2}>

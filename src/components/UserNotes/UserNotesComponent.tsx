@@ -5,7 +5,7 @@ import {
   Autocomplete,
   Box,
   Button,
-  Grid, Rating, Stack, TextField, Typography
+  Grid, Rating, Stack, TextField
 } from "@mui/material";
 import UserNoteComponent from "./UserNoteComponent";
 import {useDispatch} from "react-redux";
