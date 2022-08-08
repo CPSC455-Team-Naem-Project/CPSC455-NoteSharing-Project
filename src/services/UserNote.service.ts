@@ -184,9 +184,8 @@ const UserNoteService = {
         }
     },
 
-    getPublicFilteredNotes: async (filterObject: any)=> {
-            return await axios.post(`${BASE_URL}/search`, filterObject)
- 
+    getPublicFilteredNotes: async (filter: any)=> {
+            return await axios.post(`${BASE_URL}/search`, filter)
     },
 
     getPro: async () : Promise<boolean>=> {

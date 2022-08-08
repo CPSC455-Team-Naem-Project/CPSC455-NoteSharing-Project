@@ -19,7 +19,6 @@ const Feed = () => {
     console.log("getting notes");
     let allPublicNotes = await UserNoteService.getMostRecentNotes();
     let mostRecentNotes = allPublicNotes.data.reverse().slice(0, 100);
-    console.log(mostRecentNotes);
     setCurrentNotes(mostRecentNotes);
 
     // get user following list
