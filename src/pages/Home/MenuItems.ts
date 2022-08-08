@@ -5,8 +5,10 @@ import UserNotesComponent from "../../components/UserNotes/UserNotesComponent";
 import Feed from "../../components/Feed";
 import Search from "../../components/Search";
 import Profile from "../../components/Profile";
+import ListenTo from "../../components/ListenTo";
 import React from "react";
 import {OverridableComponent} from "@mui/material/OverridableComponent";
+import HearingIcon from '@mui/icons-material/Hearing';
 
 type HomeComponentsType = {
     [menu in MENU]: {
@@ -49,5 +51,11 @@ export const HomeComponents: HomeComponentsType = {
         display: 'Profile',
         icon: Person,
         link: '/profile'
-    }
+    },
+    [MENU.LISTEN_TO]: {
+        component: ListenTo,
+        display: 'Listen To',
+        icon: HearingIcon,
+        link: '/listen-to'
+    },
 }

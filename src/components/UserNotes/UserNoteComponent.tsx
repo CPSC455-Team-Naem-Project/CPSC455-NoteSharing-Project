@@ -17,8 +17,6 @@ import { useDispatch } from "react-redux";
 import { deleteNote } from "../../reducers/UserNoteSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SpeechSection from "./SpeechSection";
-import getPDFFile from "./SpeechSection";
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -181,17 +179,7 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                                                         <Download />
                                                     </IconButton>
                                                 </TableCell>
-                                            </TableRow>,
-                                            <><SpeechSection trigger={file.contentType?.toString().includes("pdf")}>
-                                                <h3>HERE IS THE AUDIO SECTION FOR PDF</h3>
-                                                <button id="getPDF" onClick={() => getPDFFile(file.url)}>Get Text</button>
-                                                <br />
-                                                <label>Speed</label>
-                                                <input type="number" name="spee" id="speed" min=".5" max="3" step=".5" value="1"></input>
-                                                <button id="play-button">Play</button>
-                                                <button id="pause-button">Pause</button>
-                                                <button id="stop-button">Stop</button>
-                                            </SpeechSection></>
+                                            </TableRow>
                                         ]
                                     ))
                                 }
