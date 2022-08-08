@@ -167,6 +167,7 @@ export default function BasicTabs() {
           <Tab icon={<LockIcon/>} label="Private Notes" {...a11yProps(1)} />
           <Tab icon={<PeopleAltIcon/>}label="Followers" {...a11yProps(2)} />
           <Tab icon={<PersonAddAltIcon/>}label="Following" {...a11yProps(3)} />
+          <Tab icon={<SettingsIcon/>}label="Settings" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -228,7 +229,6 @@ export default function BasicTabs() {
       <TabPanel value={value} index={4}>
         Edition: {pro? "Professional" : "Standard"}
         {!pro && <div><Button variant="outlined" sx={ {marginTop: 2 } } onClick={handlePayment}>Click to purchase professional edition</Button></div> }
-        
       </TabPanel>
     </Box>
   );
