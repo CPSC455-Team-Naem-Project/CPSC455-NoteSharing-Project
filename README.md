@@ -1,5 +1,7 @@
 # Note Sharing App
 
+Front End Deployment: https://cpsc455notefrontend.herokuapp.com/
+
 Our app was created to solve two problems. 1) Being able to look at your own notes from anywhere and 2) being able to find notes for classes you want to take. Often times when registering for courses there is not a lot of information available on what that course involves. With our app, students can upload notes and syllabi so others will have a better idea of what is in store and so they can study while away from their main computer.
 
 # Server Code
@@ -54,8 +56,8 @@ Our app was created to solve two problems. 1) Being able to look at your own not
 #  List of contributions
 - Aaron: Created upload component, deployed front and backend with github actions and Heroku, added search feature, fixed bugs.  Also added Stripe/professional feature, filetype validation for uploads, organized the team, wrote most of the documentation, added storybook to show off initial components in isolation.  Created initial components and redux actions but we ended up refactoring them and not using them. 
 - James:
-- Jimmy:
-- Sebastian: 
+- Jimmy: Integrated firebase user authentication, home page layout, figma design creation. Integated firebase storage for static file uploads. Implemented redux for handling and managing navigation state. Added node server to handle the backend of the notes app. Added a UserNote Service in frontend to faciliate server calls. Added Mongo database connection to server. Added UserNote Model to handle user notes. Added routes in backend to handle requests for user notes. Improved APIs for efficiency.
+- Sebastian: Added the "Listen To" feature which includes a text-to-speech feature with text input and a speed component. Made a few style changes and modifications to front-end code. Added a back-end for text-to-speech to include the parsing of PDF files but this code ended up not functioning and was consequently removed. 
 
 
 # Getting Started with Create React App
