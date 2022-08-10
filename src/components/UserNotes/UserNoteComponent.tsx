@@ -43,6 +43,7 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
     const [disableFollow, setDisableFollow] = useState(false);
     const [disableDelete, setDisableDelete] = useState(true);
     const [disableSave, setDisableSave] = useState(false);
+    const [disableUnSave, setDisableUnSave] = useState(true);
     const userControledNote = !userId || userId === userNote.userId ? true : false
 
     const dispatch = useDispatch();
@@ -64,12 +65,14 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                 setDisableDelete(false);
             }
 
-            let savedNotes = savedNotesFromServer.data
             // If note is saved, allow user to unsave AND disable save
-            if (savedNotes.includes(userNote)) {
-                console.log("SHOULD ENABLE UNSAVE AND DISABLE SAVE");
-                setDisableSave(true);
-            }
+            let savedNotesData = savedNotesFromServer.data
+            savedNotesData.map((note: any) => {
+                if (note._id == userNote._id) {
+                    setDisableSave(true);
+                    setDisableUnSave(false);
+                }
+            })
         }
         init();
     }, [])
@@ -123,7 +126,7 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
             />
             <CardContent>
                 <Typography variant="body2">
-                    Course: {userNote.course.label}
+                    Course: {userNote.course?.label}
                 </Typography>
                 <Typography variant="body2">
                     Visibility: {userNote.visibility ? 'Public' : 'Private'}
@@ -141,7 +144,7 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
                     <IconButton aria-label="add" onClick={saveNote} disabled={disableSave}>
                         <Add />
                     </IconButton>
-                    <IconButton aria-label="subtract" onClick={unsaveNote}>
+                    <IconButton aria-label="subtract" onClick={unsaveNote} disabled={disableUnSave}>
                         <Remove />
                     </IconButton>
                     <Button id="follow-button" onClick={followUser} variant="outlined" disabled={disableFollow}>Follow</Button>

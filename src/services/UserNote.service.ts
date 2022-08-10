@@ -168,14 +168,23 @@ const UserNoteService = {
     },
 
     saveNoteToSavedNotes: async (userNote: any): Promise<UserNote> => {
-        console.log("Saved Note is: ", userNote)
-        const { userId } = UserNoteService.getUserCredentials();
-        const postData = await axios.post(`${BASE_URL}/saveNote/${userId}`, userNote)
+        const {userId, userEmail, userDisplayName} = UserNoteService.getUserCredentials();
+        const data = {...userNote, userEmail, userId, userDisplayName};
+        console.log("Note to save", data)
+        const postData = await axios.post<UserNote>(`${BASE_URL}/saveNote/${userId}`, data)
         return postData.data;
     },
 
-    unsaveNote: async (noteId: string) => {
-        await axios.delete(`${BASE_URL}/unsaveNote/${noteId}`)
+    unsaveNote: async (noteId: string): Promise<boolean> => {
+        try {
+            const {userId} = UserNoteService.getUserCredentials();
+            const url = concatUrl(`unsaveNote/${userId}/${noteId}`)
+            const response = await axios.delete(url)
+            return response.status === 200;
+        } catch (e) {
+            console.log(e);
+            return false
+        }
     },
 
     editNoteById: async (note: UserNote): Promise<boolean> => {
