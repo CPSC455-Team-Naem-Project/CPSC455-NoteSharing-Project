@@ -67,12 +67,15 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
 
             // If note is saved, allow user to unsave AND disable save
             let savedNotesData = savedNotesFromServer.data
-            savedNotesData.map((note: any) => {
-                if (note._id == userNote._id) {
-                    setDisableSave(true);
-                    setDisableUnSave(false);
-                }
-            })
+            if (savedNotesData !== ""){
+                savedNotesData.map((note: any) => {
+                    if (note._id == userNote._id) {
+                        setDisableSave(true);
+                        setDisableUnSave(false);
+                    }
+                })
+            }
+
         }
         init();
     }, [])
