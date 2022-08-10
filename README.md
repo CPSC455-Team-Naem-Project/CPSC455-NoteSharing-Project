@@ -2,6 +2,9 @@
 
 Our app was created to solve two problems. 1) Being able to look at your own notes from anywhere and 2) being able to find notes for classes you want to take. Often times when registering for courses there is not a lot of information available on what that course involves. With our app, students can upload notes and syllabi so others will have a better idea of what is in store and so they can study while away from their main computer.
 
+# Server Code
+- Please note that our server code is store on a different respository.  Please find it here: https://github.com/CPSC455-Team-Naem-Project/note-app-server
+
 # Minimal Requirements
 - (Complete) Have a login page.
 - (Partially complete) Users can upload pictures of their handwritten notes or typed notes and edit/share them:
