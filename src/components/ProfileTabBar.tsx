@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, Tab, Typography, Box, Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, Rating, TextField, Alert } from "@mui/material";
+import { Tabs, Tab, Typography, Box, Button, Grid, Alert } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import LockIcon from '@mui/icons-material/Lock';
-import UserNoteService from "../services/UserNote.service";
-import UserNoteComponent from "./UserNotes/UserNoteComponent";
+import UserNoteService from '../services/UserNote.service';
+import UserNoteComponent from './UserNotes/UserNoteComponent';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { FollowerAndFollowingTag } from './FollowerAndFollowingTag/FollowerAndFollowingTag';
@@ -30,7 +30,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography component={"span"}>{children}</Typography>
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -39,58 +39,49 @@ function TabPanel(props: TabPanelProps) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  const [newFilteredNotes, setNewFilteredNotes] = useState([])
+  const [newFilteredNotes, setNewFilteredNotes] = useState([]);
   const [privateNotes, setPrivateNotes] = useState([]);
   const [id, setId] = useState('');
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
-  const [pro, setPro] = useState(false)
-  const [hasError, setHasError] = useState(false)
-  const [success, setSuccess] = useState(false)
-
+  const [pro, setPro] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const location = useLocation();
 
-  async function getAndSetPro(){
-    try{
-    setPro(await UserNoteService.getPro() )
-    } catch(e){
-      console.log("E IS", e)
-      setHasError(true)
+  async function getAndSetPro() {
+    try {
+      setPro(await UserNoteService.getPro());
+    } catch (e) {
+      setHasError(true);
     }
-
   }
 
-
   useEffect(() => {
-    const {userId} = UserNoteService.getUserCredentials();
+    const { userId } = UserNoteService.getUserCredentials();
     setId(userId);
     applyFilter();
     initializeFollowers();
-    getAndSetPro()
-    let purchaseSucceeded = location.search === "?success"
-    let purchaseFailed = location.search === "?failure"
-    if(purchaseSucceeded){
-      setSuccess(true)
+    getAndSetPro();
+    let purchaseSucceeded = location.search === '?success';
+    let purchaseFailed = location.search === '?failure';
+    if (purchaseSucceeded) {
+      setSuccess(true);
     }
-    if(purchaseFailed){
-      console.log("HELLO, purchased")
-      setHasError(true)
+    if (purchaseFailed) {
+      setHasError(true);
     }
     const timer = setTimeout(() => {
-      setSuccess(false)
-      setHasError(false)
-
+      setSuccess(false);
+      setHasError(false);
     }, 4000);
     return () => clearTimeout(timer);
-    
-
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setHasError(false)
-
+      setHasError(false);
     }, 4000);
     return () => clearTimeout(timer);
   }, [hasError]);
@@ -98,14 +89,14 @@ export default function BasicTabs() {
   async function initializeFollowers() {
     let updatedFollowers = await UserNoteService.getFollowersByUserId();
     let updatedFollowing = await UserNoteService.getFollowingByUserId();
-    if( updatedFollowers.data === ""){
-      setFollowers([])
-    } else{
+    if (updatedFollowers.data === '') {
+      setFollowers([]);
+    } else {
       setFollowers(updatedFollowers.data);
     }
-    if (updatedFollowing.data === "") {
-      setFollowing([])
-    } else{
+    if (updatedFollowing.data === '') {
+      setFollowing([]);
+    } else {
       setFollowing(updatedFollowing.data);
     }
   }
@@ -121,134 +112,148 @@ export default function BasicTabs() {
     setValue(newValue);
   };
 
-  function handlePayment(){
-    let fetchBaseURL = process.env.REACT_APP_PROD_URL ? process.env.REACT_APP_PROD_URL: process.env.REACT_APP_SERVER_URL
-    let stripeURL =`${fetchBaseURL}/stripe-checkout`
+  function handlePayment() {
+    let fetchBaseURL = process.env.REACT_APP_PROD_URL
+      ? process.env.REACT_APP_PROD_URL
+      : process.env.REACT_APP_SERVER_URL;
+    let stripeURL = `${fetchBaseURL}/stripe-checkout`;
     fetch(stripeURL, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-type" : 'application/json'
+        'Content-type': 'application/json',
       },
-      body: JSON.stringify(
-        {id}
-      )
-    }).then(res => {
-      if (res.ok){
-        let x = res.json()
-        return x
-      } else{
-        return res.json().then(json => {
-          Promise.reject(json)
-        })
-      }
-    }).then(({url})=> {
-      window.location = url
-    }).catch(err => {
-      console.log("ERR", err)
-      setHasError(true)
+      body: JSON.stringify({ id }),
     })
-
+      .then((res) => {
+        if (res.ok) {
+          let x = res.json();
+          return x;
+        } else {
+          return res.json().then((json) => {
+            Promise.reject(json);
+          });
+        }
+      })
+      .then(({ url }) => {
+        window.location = url;
+      })
+      .catch((err) => {
+        setHasError(true);
+      });
   }
 
   async function applyFilter() {
     try {
       let fromServer = await UserNoteService.getAllNotesByUserId();
-      console.log("NOTES ARE", fromServer)
       let notesFromServer = fromServer.data;
-      if (notesFromServer === ""){
-        setNewFilteredNotes([])
+      if (notesFromServer === '') {
+        setNewFilteredNotes([]);
         setPrivateNotes([]);
-      } else{
+      } else {
         setNewFilteredNotes(notesFromServer);
-        console.log("NOTES", notesFromServer)
-        let pNotes = notesFromServer.filter((note: any) => note.visibility === false)
+        let pNotes = notesFromServer.filter(
+          (note: any) => note.visibility === false
+        );
         setPrivateNotes(pNotes);
       }
-
-
     } catch (error) {
-      console.log("ERRO", error)
-      setHasError(true)
+      setHasError(true);
     }
   }
 
   return (
     <Box key={uuidv4()} sx={{ width: '100%' }}>
-            {hasError &&<Alert severity="error" sx={{color: "black !important"}}>Something went wrong with your purchase</Alert>}
-            {success && <Alert severity="success" sx={{color: "black !important"}}>Success!  You now have professional mode enabled</Alert>}
+      {hasError && (
+        <Alert severity="error" sx={{ color: 'black !important' }}>
+          Something went wrong with your purchase
+        </Alert>
+      )}
+      {success && (
+        <Alert severity="success" sx={{ color: 'black !important' }}>
+          Success! You now have professional mode enabled
+        </Alert>
+      )}
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} 
-        onChange={handleChange} 
-        aria-label="tabs"
-        textColor="inherit"
-        indicatorColor="primary">
-          <Tab icon={<TableRowsIcon/>} label="My Notes" {...a11yProps(0)}/>
-          <Tab icon={<LockIcon/>} label="Private Notes" {...a11yProps(1)} />
-          <Tab icon={<PeopleAltIcon/>}label="Followers" {...a11yProps(2)} />
-          <Tab icon={<PersonAddAltIcon/>}label="Following" {...a11yProps(3)} />
-          <Tab icon={<SettingsIcon/>}label="Settings" {...a11yProps(4)} />
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="tabs"
+          textColor="inherit"
+          indicatorColor="primary"
+        >
+          <Tab icon={<TableRowsIcon />} label="My Notes" {...a11yProps(0)} />
+          <Tab icon={<LockIcon />} label="Private Notes" {...a11yProps(1)} />
+          <Tab icon={<PeopleAltIcon />} label="Followers" {...a11yProps(2)} />
+          <Tab
+            icon={<PersonAddAltIcon />}
+            label="Following"
+            {...a11yProps(3)}
+          />
+          <Tab icon={<SettingsIcon />} label="Settings" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-      <div>
-        <Grid container spacing={2}>
-          {
-            newFilteredNotes.map((note, index) =>
-                <Grid item xs={12} lg={6}>
-                  <UserNoteComponent index={index} userNote={note} userId={id} />
-                </Grid>
-            )
-          }
-        </Grid>
-      </div>
+        <div>
+          <Grid container spacing={2}>
+            {newFilteredNotes.map((note, index) => (
+              <Grid item xs={12} lg={6}>
+                <UserNoteComponent index={index} userNote={note} userId={id} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <div>
-        <Grid container spacing={2}>
-          {
-            privateNotes.map((note, index) =>
-                <Grid item xs={12} lg={6}>
-                  <UserNoteComponent index={index} userNote={note} userId={id} />
-                </Grid>
-            )
-          }
-        </Grid>
-      </div>
+        <div>
+          <Grid container spacing={2}>
+            {privateNotes.map((note, index) => (
+              <Grid item xs={12} lg={6}>
+                <UserNoteComponent index={index} userNote={note} userId={id} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={2}>
-      <div>
-        <Grid container spacing={2}>
-        {
-            followers.map((id) =>
-                <Grid item xs={12} lg={6}>
-                  <div className="user-tag">
+        <div>
+          <Grid container spacing={2}>
+            {followers.map((id) => (
+              <Grid item xs={12} lg={6}>
+                <div className="user-tag">
                   <FollowerAndFollowingTag followerName={id} />
-                  </div>
-                </Grid>
-            )
-          }
-        </Grid>
-      </div>
+                </div>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={3}>
-      <div>
-        <Grid container spacing={2}>
-          {
-            following.map((id) =>
-                <Grid item xs={12} lg={6}>
-                  <div className="user-tag">
+        <div>
+          <Grid container spacing={2}>
+            {following.map((id) => (
+              <Grid item xs={12} lg={6}>
+                <div className="user-tag">
                   <FollowerAndFollowingTag followerName={id} />
-                  </div>
-                </Grid>
-            )
-          }
-        </Grid>
-      </div>
+                </div>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Edition: {pro? "Professional" : "Standard"}
-        {!pro && <div><Button variant="outlined" sx={ {marginTop: 2 } } onClick={handlePayment}>Click to purchase professional edition</Button></div> }
+        Edition: {pro ? 'Professional' : 'Standard'}
+        {!pro && (
+          <div>
+            <Button
+              variant="outlined"
+              sx={{ marginTop: 2 }}
+              onClick={handlePayment}
+            >
+              Click to purchase professional edition
+            </Button>
+          </div>
+        )}
       </TabPanel>
     </Box>
   );

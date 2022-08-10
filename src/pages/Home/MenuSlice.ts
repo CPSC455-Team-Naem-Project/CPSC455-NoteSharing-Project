@@ -15,7 +15,7 @@ export interface MenuState {
 }
 
 const initialState: MenuState = {
-  currentMenu: MENU.UPLOAD
+  currentMenu: MENU.UPLOAD,
 };
 
 export const menuSlice = createSlice({

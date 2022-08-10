@@ -1,6 +1,6 @@
-import {UserNoteCourseAttributes} from "../models/UserNote";
+import { UserNoteCourseAttributes } from '../models/UserNote';
 
-const courses: {[name: string]: UserNoteCourseAttributes} = {
+const courses: { [name: string]: UserNoteCourseAttributes } = {
   CPSC100: {
     name: 'CPSC 100',
     className: 'CPSC100',

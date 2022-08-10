@@ -1,5 +1,5 @@
-import SpeechSection from "./SpeechSection";
+import SpeechSection from './SpeechSection';
 
 export default function ListenTo() {
-    return <SpeechSection/>;
+  return <SpeechSection />;
 }

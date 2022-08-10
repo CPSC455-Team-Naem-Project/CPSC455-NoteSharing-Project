@@ -34,15 +34,6 @@ registerPlugin(
   FilePondPluginFileValidateType
 );
 
-interface Note {
-  title: string;
-  iconType: IconDefinition;
-  course: any;
-  visibility: string;
-  rating: number;
-  id: number;
-}
-
 export default function NoteUploadPage({ options }: any) {
   const [files, setFiles] = useState<any[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<UserNoteFile[]>([]);
@@ -94,9 +85,7 @@ export default function NoteUploadPage({ options }: any) {
         date: new Date().toISOString(),
       });
       setUploadedFiles(uploadedNote.files);
-    } catch (e) {
-        
-    }
+    } catch (e) {}
   };
 
   return (
@@ -120,8 +109,8 @@ export default function NoteUploadPage({ options }: any) {
             name="simple-controlled"
             value={ratingValue}
             onChange={(event, newValue) => {
-              if(newValue === ratingValue){
-                setRatingValue(0)
+              if (newValue === ratingValue) {
+                setRatingValue(0);
               }
               // @ts-ignore
               setRatingValue(newValue);
@@ -147,7 +136,7 @@ export default function NoteUploadPage({ options }: any) {
                 value="Public"
                 control={<Radio />}
                 label="Public"
-                sx={{ marginRight: 0, color: "white" }}
+                sx={{ marginRight: 0, color: 'white' }}
               />
             </RadioGroup>
           </FormControl>
@@ -173,8 +162,10 @@ export default function NoteUploadPage({ options }: any) {
           files={files}
           allowReorder={true}
           allowMultiple={true}
-          dropValidation = {true}
-          labelFileTypeNotAllowed = {"Standard users may only upload PNGs, JPGs, and PDFs while professional users may upload word documents.  Other file types are not allowed"}
+          dropValidation={true}
+          labelFileTypeNotAllowed={
+            'Standard users may only upload PNGs, JPGs, and PDFs while professional users may upload word documents.  Other file types are not allowed'
+          }
           allowFileTypeValidation={true}
           onupdatefiles={setFileHelper}
           acceptedFileTypes={acceptedFileTypes}
