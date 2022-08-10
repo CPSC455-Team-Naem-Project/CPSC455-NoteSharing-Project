@@ -11,7 +11,7 @@ import {
     TableHead,
     TableRow, Typography
 } from "@mui/material";
-import { Attachment, Delete, Download, Add, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { Attachment, Delete, Download, Add, Remove, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import UserNoteService from "../../services/UserNote.service";
 import { useDispatch } from "react-redux";
 import { deleteNote } from "../../reducers/UserNoteSlice";
@@ -42,6 +42,7 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
     const [expanded, setExpanded] = useState(false);
     const [disableFollow, setDisableFollow] = useState(false);
     const [disableDelete, setDisableDelete] = useState(true);
+    const [disableSave, setDisableSave] = useState(false);
     const userControledNote = !userId || userId === userNote.userId ? true : false
 
     const dispatch = useDispatch();
@@ -50,6 +51,7 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
         async function init() {
             let nameToFollow = userNote.userDisplayName;
             let following = await UserNoteService.getFollowingByUserId();
+            let savedNotesFromServer = await UserNoteService.getSavedNotes();
             const { userId, userDisplayName } = await UserNoteService.getUserCredentials();
             
             // If user doesn't follow and isn't themselves, follow.
@@ -60,6 +62,13 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
             // If users' note, enable delete button
             if (userId === userNote.userId) {
                 setDisableDelete(false);
+            }
+
+            let savedNotes = savedNotesFromServer.data
+            // If note is saved, allow user to unsave AND disable save
+            if (savedNotes.includes(userNote)) {
+                console.log("SHOULD ENABLE UNSAVE AND DISABLE SAVE");
+                setDisableSave(true);
             }
         }
         init();
@@ -85,6 +94,10 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
             .catch((error) => console.error(error));
     }
 
+    async function unsaveNote() {
+        await UserNoteService.unsaveNote(userNote._id);
+    }
+
     async function followUser() {
         let nameToFollow = userNote.userDisplayName;
         let following = await UserNoteService.getFollowingByUserId();
@@ -104,10 +117,9 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
             raised
             className="note"
         >
-
             <CardHeader
-                title={userNote.title}
-                subheader={<div>{new Date(userNote.date).toDateString()}<div>{!userControledNote && userNote.userDisplayName}</div></div>}
+                title={<div id="note-title">{userNote.title}</div>}
+                subheader={<div><div id="user-name">{userNote.userDisplayName}</div><div>{new Date(userNote.date).toDateString()}<div>{!userControledNote && userNote.userDisplayName}</div></div></div>}
             />
             <CardContent>
                 <Typography variant="body2">
@@ -122,14 +134,17 @@ export default function UserNoteComponent(props: { userNote: UserNote, index: nu
             </CardContent>
 
             <CardActions disableSpacing>
-                {userControledNote && <div>
+                {<div>
                     <IconButton onClick={deleteUserNote} disabled={disableDelete}>
                         <Delete />
                     </IconButton>
-                    <IconButton aria-label="add" onClick={saveNote}>
+                    <IconButton aria-label="add" onClick={saveNote} disabled={disableSave}>
                         <Add />
                     </IconButton>
-                    <Button id="follow-button" onClick={() => followUser()} variant="outlined" disabled={disableFollow}>Follow</Button>
+                    <IconButton aria-label="subtract" onClick={unsaveNote}>
+                        <Remove />
+                    </IconButton>
+                    <Button id="follow-button" onClick={followUser} variant="outlined" disabled={disableFollow}>Follow</Button>
                 </div>
                 }
                 <ExpandMore

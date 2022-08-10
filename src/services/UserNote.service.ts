@@ -169,8 +169,13 @@ const UserNoteService = {
 
     saveNoteToSavedNotes: async (userNote: any): Promise<UserNote> => {
         console.log("Saved Note is: ", userNote)
-        const postData = await axios.post<UserNote>(`${BASE_URL}/saveNote`, userNote)
+        const { userId } = UserNoteService.getUserCredentials();
+        const postData = await axios.post(`${BASE_URL}/saveNote/${userId}`, userNote)
         return postData.data;
+    },
+
+    unsaveNote: async (noteId: string) => {
+        await axios.delete(`${BASE_URL}/unsaveNote/${noteId}`)
     },
 
     editNoteById: async (note: UserNote): Promise<boolean> => {
