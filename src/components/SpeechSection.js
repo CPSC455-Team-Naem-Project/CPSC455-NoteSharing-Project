@@ -72,29 +72,12 @@ function SpeechSection() {
       onChange={handleChange}
     />
   );
-  /*
-    speedInput.addEventListener('input', () => {
-        stopText()
-        playText(utterance.text.substring(currentCharacter))
-    })*/
-  /*
-    function getInitialState() {
-        return { value: 1 };
-    }
-    function handleChange(event) {
-        this.setState({ value: event.target.value });
-        playText(utterance.text.substring(currentCharacter));
-    }
-    const setSpeed = () => {
-        stopText();
-        playText(utterance.text.substring(currentCharacter));
-    }*/
+  
   return (
     <>
       <h3 className="description">
         Copy text from your notes and paste it below to listen:
       </h3>
-      {/* <textarea id="text-input" className="textAreaStyle" onChange={(e) => { setText(e.target.value) }}></textarea> */}
       <textarea
         id="text-input"
         className="textAreaStyle"
@@ -102,7 +85,6 @@ function SpeechSection() {
           setText(e.target.value);
         }}
       ></textarea>
-      {/* <button className="buttonStyle" onClick={() => { handleSpeak() }}>Listen</button> */}
       <button
         id="play-button"
         className="buttonStyle"
@@ -131,7 +113,6 @@ function SpeechSection() {
         Stop
       </button>
       <label className="speedLabel">Speed</label>
-      {/* <input id="speed" className="speedInput" type="number" min=".5" max="3" step=".5" value="1" onClick={() => { setSpeed() }}/> */}
       <Slider />
     </>
   );
