@@ -55,6 +55,7 @@ export default function BasicTabs() {
     try{
     setPro(await UserNoteService.getPro() )
     } catch(e){
+      console.log("E IS", e)
       setHasError(true)
     }
 
@@ -73,6 +74,7 @@ export default function BasicTabs() {
       setSuccess(true)
     }
     if(purchaseFailed){
+      console.log("HELLO, purchased")
       setHasError(true)
     }
     const timer = setTimeout(() => {
@@ -96,8 +98,16 @@ export default function BasicTabs() {
   async function initializeFollowers() {
     let updatedFollowers = await UserNoteService.getFollowersByUserId();
     let updatedFollowing = await UserNoteService.getFollowingByUserId();
-    setFollowers(updatedFollowers.data);
-    setFollowing(updatedFollowing.data);
+    if( updatedFollowers.data === ""){
+      setFollowers([])
+    } else{
+      setFollowers(updatedFollowers.data);
+    }
+    if (updatedFollowing.data === "") {
+      setFollowing([])
+    } else{
+      setFollowing(updatedFollowing.data);
+    }
   }
 
   function a11yProps(index: number) {
@@ -134,6 +144,7 @@ export default function BasicTabs() {
     }).then(({url})=> {
       window.location = url
     }).catch(err => {
+      console.log("ERR", err)
       setHasError(true)
     })
 
@@ -142,12 +153,21 @@ export default function BasicTabs() {
   async function applyFilter() {
     try {
       let fromServer = await UserNoteService.getAllNotesByUserId();
+      console.log("NOTES ARE", fromServer)
       let notesFromServer = fromServer.data;
-      setNewFilteredNotes(notesFromServer);
+      if (notesFromServer === ""){
+        setNewFilteredNotes([])
+        setPrivateNotes([]);
+      } else{
+        setNewFilteredNotes(notesFromServer);
+        console.log("NOTES", notesFromServer)
+        let pNotes = notesFromServer.filter((note: any) => note.visibility === false)
+        setPrivateNotes(pNotes);
+      }
 
-      let pNotes = notesFromServer.filter((note: any) => note.visibility === false)
-      setPrivateNotes(pNotes);
+
     } catch (error) {
+      console.log("ERRO", error)
       setHasError(true)
     }
   }

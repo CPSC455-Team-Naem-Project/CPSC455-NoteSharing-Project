@@ -22,7 +22,6 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useDispatch } from 'react-redux';
 import { defaultOptions } from '../../constants/courses';
 import UserNoteService from '../../services/UserNote.service';
 import { UserNoteCourseAttributes, UserNoteFile } from '../../models/UserNote';
@@ -55,29 +54,14 @@ export default function NoteUploadPage({ options }: any) {
     label: '',
     name: '',
   });
-  const [ratingValue, setRatingValue] = useState(5);
+  const [ratingValue, setRatingValue] = useState(0);
   const [acceptedFileTypes, setAcceptedFileTypes] = useState([
     'application/pdf',
     'image/*',
-    'video/*',
   ]);
 
   async function setFileHelper(fileItems: any) {
-    let isPro = await UserNoteService.getPro();
-    if (isPro) {
-      setFiles(fileItems);
-    } else {
-      // @ts-ignore
-      let files = fileItems.filter(
-        (file: { file: { type: string; }; }) =>
-          file.file.type !==
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' &&
-          file.file.type !== 'application/msword'
-      );
-      if (files.length > 0) {
-        setFiles(files);
-      }
-    }
+    setFiles(fileItems);
   }
 
   useEffect(() => {
@@ -87,7 +71,6 @@ export default function NoteUploadPage({ options }: any) {
           'application/msword',
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           'image/*',
-          'video/*',
           'application/pdf',
         ]);
       }
@@ -137,6 +120,9 @@ export default function NoteUploadPage({ options }: any) {
             name="simple-controlled"
             value={ratingValue}
             onChange={(event, newValue) => {
+              if(newValue === ratingValue){
+                setRatingValue(0)
+              }
               // @ts-ignore
               setRatingValue(newValue);
             }}
@@ -161,7 +147,7 @@ export default function NoteUploadPage({ options }: any) {
                 value="Public"
                 control={<Radio />}
                 label="Public"
-                sx={{ marginRight: 0 }}
+                sx={{ marginRight: 0, color: "white" }}
               />
             </RadioGroup>
           </FormControl>
@@ -187,6 +173,8 @@ export default function NoteUploadPage({ options }: any) {
           files={files}
           allowReorder={true}
           allowMultiple={true}
+          dropValidation = {true}
+          labelFileTypeNotAllowed = {"Standard users may only upload PNGs, JPGs, and PDFs while professional users may upload word documents.  Other file types are not allowed"}
           allowFileTypeValidation={true}
           onupdatefiles={setFileHelper}
           acceptedFileTypes={acceptedFileTypes}

@@ -34,9 +34,10 @@ const Feed = () => {
   return (
     <div className="profile">
       <div className="feed-container">
+        <h1>Work in Progress</h1>
           {currentNotes.map((note, index) =>
-              <Grid item xs={12} lg={6}>
-              <UserNoteComponent index={index} userNote={note} userId={note.userId}/>
+              <Grid item xs={12} lg={6} key = {index}>
+              <UserNoteComponent key={index} index={index} userNote={note} userId={note.userId}/>
             </Grid>
           )}
       </div>

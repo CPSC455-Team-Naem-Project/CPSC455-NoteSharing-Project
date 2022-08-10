@@ -91,8 +91,8 @@ try{
 
         {
           newFilteredNotes.map((note, index) =>
-              <Grid item xs={12} lg={6}>
-                <UserNoteComponent index={index} userNote={note} userId={id} />
+              <Grid key={index} item xs={12} lg={6}>
+                <UserNoteComponent key={index} index={index} userNote={note} userId={id} />
               </Grid>
           )
         }
