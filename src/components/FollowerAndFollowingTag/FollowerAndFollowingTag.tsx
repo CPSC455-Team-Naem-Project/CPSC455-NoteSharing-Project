@@ -5,14 +5,14 @@ import { useEffect, useState } from 'react';
 
 export const FollowerAndFollowingTag = (props: { followerName: any }) => {
   const { followerName } = props;
-  const [unfollowButton, setUnfollowButton] = useState(true);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     async function init() {
       const followingFromServer = await UserNoteService.getFollowingByUserId();
       const following = followingFromServer.data;
       if (!following.includes(followerName)) {
-        setUnfollowButton(false);
+        setVisible(false)
       }
     }
     init();
@@ -21,12 +21,14 @@ export const FollowerAndFollowingTag = (props: { followerName: any }) => {
   async function unfollow() {
     UserNoteService.removeFromFollowers(followerName);
     UserNoteService.unfollowUser(followerName);
+    setVisible(false)
+
   }
 
   return (
     <div className="follower-following-container">
-      {followerName}
-      {unfollowButton && (
+     {visible && followerName}
+      {visible && (
         <Button
           id="unfollow-button"
           onClick={unfollow}

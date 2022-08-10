@@ -133,6 +133,7 @@ export default function UserNoteComponent(props: {
       !following.data.includes(nameToFollow) &&
       nameToFollow !== userDisplayName
     ) {
+      setDisableFollow(true)
       let idToFollow = await UserNoteService.getUserIdByNoteId(userNote._id);
       await UserNoteService.followUser(idToFollow);
       await UserNoteService.addToFollowList(idToFollow);

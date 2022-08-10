@@ -100,6 +100,7 @@ export default function BasicTabs() {
       setFollowing(updatedFollowing.data);
     }
   }
+  
 
   function a11yProps(index: number) {
     return {
@@ -216,6 +217,7 @@ export default function BasicTabs() {
         </div>
       </TabPanel>
       <TabPanel value={value} index={2}>
+        <div>Work In Progress</div>
         <div>
           <Grid container spacing={2}>
             {followers.map((id) => (
@@ -229,6 +231,7 @@ export default function BasicTabs() {
         </div>
       </TabPanel>
       <TabPanel value={value} index={3}>
+      <div>Work In Progress</div>
         <div>
           <Grid container spacing={2}>
             {following.map((id) => (
